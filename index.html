@@ -1,0 +1,2867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdaMARP: An Adaptive Multi-Agent Interaction Framework for General Immersive Role-Playing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            /* Cleaner, paper-like background */
+            background: #f6f7fb;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 26px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            max-width: 170px;
+            height: auto;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-family: 'Inter', 'Google Sans', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .authors {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            opacity: 0.9;
+        }
+
+        .authors .equal {
+            font-size: 0.9rem;
+            color: #ffeb3b;
+        }
+
+        .affiliations {
+            font-size: 0.9rem;
+            margin-bottom: 18px;
+        }
+
+        .external-links {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .link-btn .wait-badge {
+            margin-left: 6px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 0.8em;
+            line-height: 1.2;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            white-space: nowrap;
+        }
+
+        .link-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 80px 0;
+            position: relative;
+            background: transparent;
+        }
+
+        /* Remove alternating section tint for a cleaner look */
+
+        /* Single-section mode (switch between main modules) */
+        .app-section {
+            display: none;
+        }
+
+        .app-section.active {
+            display: block;
+        }
+
+        /* In single-section mode, the section header is redundant */
+        .app-section .section-header {
+            display: none;
+        }
+
+        /* Section Header - clean and minimal */
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Inter', 'Google Sans', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .section-description {
+            display: none;
+        }
+
+        /* Result Block - keeps subsection-title and card together */
+        .result-block {
+            margin-bottom: 50px;
+            padding: 0;
+            page-break-inside: avoid;
+        }
+
+        .result-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .subsection-title {
+            font-family: 'Inter', 'Google Sans', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 0 25px 0;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        /* Content wrapper for smooth transitions */
+        .content-wrapper {
+            padding: 20px 0;
+        }
+
+        /* Paper Overview */
+        .motivation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .motivation-card {
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 4px solid #667eea;
+        }
+
+        .motivation-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+        }
+
+        .motivation-card h3 {
+            color: #e74c3c;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .motivation-card h3::before {
+            content: '⚠️';
+            font-size: 1.2rem;
+        }
+
+        .motivation-card h4 {
+            color: #27ae60;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .motivation-card h4::before {
+            content: '✨';
+            font-size: 1.2rem;
+        }
+
+        .motivation-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .motivation-card ul li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .motivation-card ul li:last-child {
+            border-bottom: none;
+        }
+
+        .motivation-card ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .framework-figure {
+            text-align: center;
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .framework-figure img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .framework-figure img:hover {
+            transform: scale(1.01);
+        }
+
+        /* Image with description wrapper */
+        .image-wrapper {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-wrapper:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .image-wrapper img:hover {
+            transform: scale(1.01);
+        }
+
+        .image-description {
+            margin-top: 20px;
+        }
+
+        .image-description h5 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .figure-caption {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #555;
+            text-align: center;
+            margin-bottom: 15px;
+            font-style: normal;
+        }
+
+        .image-description p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 8px;
+        }
+
+        /* Dataset Section */
+        .dataset-stats {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 3px solid #667eea;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+        }
+
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .stat-card p {
+            font-size: 0.85rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        @media (max-width: 1200px) {
+            .dataset-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dataset-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Experiments Section */
+        .evaluation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .evaluation-card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 4px solid #667eea;
+        }
+
+        .evaluation-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+        }
+
+        .evaluation-card h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .evaluation-card img {
+            width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .evaluation-card img:hover {
+            transform: scale(1.01);
+        }
+
+        .evaluation-card p {
+            margin-top: 15px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        /* Case Study Section */
+        .model-tabs {
+            /* Deprecated: we now show 4 models side-by-side by default */
+            display: none;
+            justify-content: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            padding: 10px 22px;
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px solid transparent;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            color: #555;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        /* Language Toggle Button */
+        .lang-btn {
+            padding: 6px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: rgba(102, 126, 234, 0.15);
+        }
+
+        .dialogue-container {
+            background: #fafbfc;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            margin-top: 25px;
+            border: 1px solid #e8ecf0;
+        }
+
+        /* Interactive Dialogue Comparison: 4-column compare layout */
+        .dialogue-container.dialogue-compare {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            padding: 14px;
+        }
+
+        .dialogue-container.dialogue-compare .dialogue-content {
+            display: block !important;
+            opacity: 1 !important;
+            background: white;
+            border: 1px solid #e8ecf0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .dialogue-container.dialogue-compare .dialogue-model-header {
+            padding: 10px 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            text-align: center;
+            background: rgba(102, 126, 234, 0.08);
+            border-bottom: 1px solid #e8ecf0;
+        }
+
+        .dialogue-container.dialogue-compare .dialogue-turn {
+            display: block;
+            padding: 10px 12px;
+        }
+
+        .dialogue-container.dialogue-compare .dialogue-turn:hover {
+            background-color: transparent;
+        }
+
+        .dialogue-container.dialogue-compare .dialogue-english,
+        .dialogue-container.dialogue-compare .dialogue-chinese {
+            border: none;
+            padding: 0;
+        }
+
+        /* Dialogue language toggle (English/Chinese) */
+        .dialogue-container.dialogue-lang-en .dialogue-chinese {
+            display: none;
+        }
+
+        .dialogue-container.dialogue-lang-zh .dialogue-english {
+            display: none;
+        }
+
+        .dialogue-content {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .dialogue-turn {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 10px 15px;
+            border-bottom: 1px solid #e8ecf0;
+            transition: background-color 0.2s ease;
+        }
+
+        .dialogue-turn:hover {
+            background-color: rgba(102, 126, 234, 0.03);
+        }
+
+        .dialogue-turn:last-child {
+            border-bottom: none;
+        }
+
+        .dialogue-english {
+            border-right: 2px solid #e0e0e0;
+            padding-right: 20px;
+        }
+
+        .dialogue-chinese {
+            padding-left: 20px;
+            color: #555;
+        }
+
+        .speaker {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+        }
+
+        .thought {
+            color: rgb(120, 80, 160);
+            font-style: italic;
+            margin: 0 3px;
+            font-size: 0.9rem;
+            display: inline;
+        }
+
+        .action {
+            color: #0000FF;
+            margin: 0 3px;
+            font-size: 0.9rem;
+            display: inline;
+        }
+
+        .environment {
+            color: #008080;
+            font-style: italic;
+            margin: 0 3px;
+            font-size: 0.9rem;
+            display: inline;
+        }
+
+        .dialogue-turn p {
+            margin: 0 3px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            display: inline;
+        }
+        
+        .dialogue-message {
+            margin: 4px 0;
+            line-height: 1.6;
+        }
+
+        .case-study-section {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid #667eea;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dialogue-container.dialogue-compare {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.65rem;
+            }
+
+            section {
+                padding: 50px 0;
+            }
+
+            .section-header {
+                padding: 25px 15px;
+                margin-bottom: 30px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .section-description {
+                font-size: 1rem;
+            }
+
+            .result-block {
+                padding: 20px 15px;
+                margin-bottom: 30px;
+            }
+
+            .subsection-title {
+                font-size: 1.2rem;
+                padding: 12px 15px;
+            }
+
+            .motivation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .external-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .model-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tab-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .dataset-stats {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            .image-wrapper > div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+
+            .evaluation-card > div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+
+            .motivation-card, .evaluation-card, .image-wrapper, .framework-figure {
+                padding: 20px;
+            }
+
+            .dialogue-container.dialogue-compare {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(25px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .section-header {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .result-block {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .subsection-title, .motivation-card, .evaluation-card, .stat-card, .image-wrapper, .framework-figure {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        /* Loading state for images */
+        img {
+            transition: opacity 0.3s ease;
+        }
+
+        img.loading {
+            opacity: 0.5;
+        }
+
+        /* Better focus states */
+        .tab-btn:focus, .link-btn:focus {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+
+        /* Print styles */
+        @media print {
+            nav, .external-links, .model-tabs {
+                display: none;
+            }
+
+            .modal {
+                display: none !important;
+            }
+            
+            .result-block {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Navigation */
+        nav {
+            /* Positioned below header; sticks to top on scroll */
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 12px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        nav.visible {
+            transform: translateY(0);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(102, 126, 234, 0.18);
+            background: rgba(255, 255, 255, 0.75);
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        nav a:hover {
+            background: rgba(102, 126, 234, 0.10);
+            border-color: rgba(102, 126, 234, 0.35);
+            transform: translateY(-1px);
+        }
+
+        /* Active nav link */
+        nav a.active {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border-color: transparent;
+            color: white;
+            font-weight: 700;
+        }
+
+        /* Image Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .block-title {
+            font-family: 'Inter', 'Google Sans', sans-serif;
+            font-size: 1.55rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 18px;
+            color: #2c3e50;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+            position: relative;
+        }
+
+        .block-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 64px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        /* Make Abstract block a bit more compact without affecting other cards */
+        #overview .result-block:first-of-type .evaluation-card {
+            padding: 22px;
+        }
+
+        #overview .result-block:first-of-type .evaluation-card p {
+            margin-bottom: 14px !important;
+        }
+
+        #overview .result-block:first-of-type .evaluation-card p:last-child {
+            margin-bottom: 0 !important;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <img src="Figures/Youtu/tencentyoutu.jpg" alt="Tencent Youtu Lab Logo" class="logo">
+            <h1>AdaMARP: An Adaptive Multi-Agent Interaction Framework for General Immersive Role-Playing</h1>
+            <div class="authors">
+                <p>Zhenhua Xu¹, Dongsheng Chen² <span class="equal">(Equal contribution)</span></p>
+                <p>Shuo Wang², Jian Li², Chengjie Wang², Meng Han¹*, Yabiao Wang²</p>
+            </div>
+            <div class="affiliations">
+                <p>¹Zhejiang University, ²Tencent Youtu Lab</p>
+                <p>*Corresponding author: Meng Han (<a href="mailto:mhan@zju.edu.cn" style="color: inherit; text-decoration: underline;">mhan@zju.edu.cn</a>)</p>
+            </div>
+            <div class="external-links">
+                <a href="#" class="link-btn">
+                    <i class="fas fa-file-alt"></i> ArXiv
+                </a>
+                <a href="#" class="link-btn">
+                    <i class="fab fa-huggingface"></i> HuggingFace <span class="wait-badge">Coming soon</span>
+                </a>
+                <a href="https://github.com/Xuzhenhua55/AdaMARP" class="link-btn">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation (module switcher) -->
+    <nav id="main-nav" class="visible">
+        <div class="container">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#dataset">Dataset</a></li>
+                <li><a href="#experiments">Experiments</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Paper Overview -->
+    <section id="overview" class="app-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Paper Overview</h2>
+                <p class="section-description">
+                    AdaMARP introduces an adaptive multi-agent framework for immersive role-playing, addressing key limitations in existing approaches through innovative message configuration and dynamic narrative control.
+                </p>
+            </div>
+
+            <div class="result-block">
+                <div class="evaluation-card" style="margin: 0 auto;">
+                    <h3 class="block-title">Abstract</h3>
+                    <p style="font-size: 0.98rem; color: #555; line-height: 1.85; margin-bottom: 0;">
+                        LLM role-playing seeks to portray arbitrary characters in interactive narratives, yet existing systems often lack immersion and adaptability. They typically under-model <em>dynamic environment information</em> and assume a largely static scene/cast, offering limited support for multi-character orchestration, scene transitions, and on-the-fly character introduction. We propose an adaptive multi-agent interaction framework dubbed <strong>AdaMARP</strong>, which featuring an immersive message format that interleaves <code>[Thought]</code>, <code>(Action)</code>, <code>&lt;Environment&gt;</code>, and <code>Speech</code>, and an explicit <strong>Scene Manager</strong> that controls role-playing via discrete actions (<code>init_scene</code>, <code>pick_speaker</code>, <code>switch_scene</code>, <code>add_role</code>, <code>end</code>) with rationales. To train these abilities, we construct <strong>AdaRPSet</strong> for the Actor Model and <strong>AdaSMSet</strong> for supervising orchestration decisions, and introduce <strong>AdaptiveBench</strong> for trajectory-level evaluation. Experiments across multiple backbones and scales show consistent gains: AdaRPSet improves character consistency, environment grounding, and narrative coherence—an 8B actor outperforming several commercial LLMs, while AdaSMSet enables smoother scene transitions and more natural role introductions, surpassing Claude Sonnet 4.5 with only 14B LLMs.
+                    </p>
+                </div>
+            </div>
+
+            <div class="result-block">
+                <div class="evaluation-card" style="margin: 0 auto;">
+                    <h3 class="block-title">AdaMARP Framework Architecture</h3>
+                    <img src="Figures/overall_framework.png" alt="Overall Framework" class="zoomable">
+                    <p class="figure-caption" style="margin-top: 20px;">Figure 1: Overall framework of <strong>AdaMARP</strong>. The left part illustrates the construction of AdaRPSet and AdaSMSet and the components of a comprehensive role profile. The upper middle part shows the roles played by the three agents, while the lower middle part depicts the dialogue trajectory generation under the orchestration of the scene manager, given predefined roles and an initial scenario. The right part presents the evaluation of the actor models and the scene manager based on the generated trajectories.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dataset Section -->
+    <section id="dataset" class="app-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Dataset</h2>
+                <p class="section-description">
+                    To train models that can follow our adaptive framework, we construct two datasets: <strong>AdaRPSet</strong> for training the Actor Model and <strong>AdaSMSet</strong> for supervising the Scene Manager with dynamic narrative control capabilities.
+                </p>
+            </div>
+
+            <!-- Comparation of General Role-Playing Datasets -->
+            <div class="result-block">
+                <div class="evaluation-card" style="margin: 0 auto;">
+                    <h3 class="block-title">Comparation of General Role-Playing Datasets</h3>
+                    <img src="Figures/Tables/comparation_of_general_role_playing_dataasets.png" alt="Comparison of datasets" class="zoomable" style="margin-top: 20px;">
+                    <p class="figure-caption" style="margin-top: 15px;">Table 1: Comparison of general role-playing datasets. Profile subfields are abbreviated as: I&amp;A (Identity &amp; Appearance), P&amp;P (Personality &amp; Psychology), SS (Speaking Style), AIA (Abilities, Interests &amp; Achievements), SHC (Social &amp; Historical Context), and PHA (Personal History Arc). #Char denotes the number of distinct characters in the dataset. Init. Scene indicates whether dialogues are provided with an explicit initial scene or setting. Interloc. indicates whether the user (or dialogue partner) is assigned a specific profile. Rel. denotes whether explicit relationships among characters are modeled or annotated in dialogues. #Dial. refers to the total number of dialogues. Env. is short for Environment, indicating whether environmental descriptions are included. Open indicates whether the dataset is open-sourced. ● and * denote partial/implicit support or values inferred from the reported pipeline; detailed clarifications on symbol interpretations and dataset releases are provided in the paper.</p>
+                </div>
+            </div>
+
+            <!-- AdaRPSet Section -->
+            <div class="result-block">
+                <div class="evaluation-card" style="margin: 0 auto;">
+                    <h3 class="block-title">AdaRPSet: Actor Model Training Dataset</h3>
+                    <p style="text-align: center; margin-bottom: 35px; font-size: 1.05rem; color: #555; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.8;">
+                        AdaRPSet is designed to train the Actor Model with immersive messaging configuration. It consists of two complementary sub-datasets that together provide comprehensive coverage of role-playing scenarios.
+                    </p>
+
+                    <!-- Two Sub-datasets Description -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 35px;">
+                        <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; border-left: 4px solid #3498db;">
+                            <h4 style="color: #3498db; margin-bottom: 15px; font-size: 1.15rem;">AdaRPSet-Extracted</h4>
+                            <p style="margin-bottom: 12px; color: #555; line-height: 1.7; font-size: 0.95rem;"><strong>Source:</strong> Extracted from narrative literary works</p>
+                            <p style="margin-bottom: 15px; color: #555; line-height: 1.7; font-size: 0.95rem;"><strong>Purpose:</strong> Teaches the model the unified Thought–Action–Speech–Environment protocol through real literary dialogues.</p>
+                            <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 0.9rem; line-height: 1.8;">
+                                <li><strong>4,443</strong> plots from diverse literary sources</li>
+                                <li><strong>2,608</strong> unique characters with rich profiles</li>
+                                <li><strong>12,525</strong> dialogue sessions</li>
+                                <li><strong>177,157</strong> utterances (avg. 14.14 turns/dialogue)</li>
+                            </ul>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; border-left: 4px solid #9b59b6;">
+                            <h4 style="color: #9b59b6; margin-bottom: 15px; font-size: 1.15rem;">AdaRPSet-Synthesis</h4>
+                            <p style="margin-bottom: 12px; color: #555; line-height: 1.7; font-size: 0.95rem;"><strong>Source:</strong> LLM-synthesized corpus with controlled generation</p>
+                            <p style="margin-bottom: 15px; color: #555; line-height: 1.7; font-size: 0.95rem;"><strong>Purpose:</strong> Covers dynamic phenomena including scene transitions, role additions, and complex multi-character interactions.</p>
+                            <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 0.9rem; line-height: 1.8;">
+                                <li><strong>20</strong> diverse topic categories</li>
+                                <li><strong>9,900</strong> synthesized plots</li>
+                                <li><strong>29,701</strong> generated characters</li>
+                                <li><strong>273,078</strong> utterances (avg. 27.58 turns/dialogue)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Combined Statistics -->
+                    <div class="dataset-stats" style="margin-bottom: 30px;">
+                        <div class="stat-card">
+                            <div class="stat-number">14,343</div>
+                            <p>Total Plots</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">32,309</div>
+                            <p>Total Characters</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">22,425</div>
+                            <p>Dialogue Sessions</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">450k+</div>
+                            <p>Total Utterances</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">~20</div>
+                            <p>Avg. Turns/Dialogue</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">20</div>
+                            <p>Topic Categories</p>
+                        </div>
+                    </div>
+
+                    <img src="Figures/Data/statistics_of_adarpset.png" alt="AdaRPSet Statistics" class="zoomable" style="max-width: 50%; display: block; margin: 0 auto;">
+                    <p class="figure-caption" style="margin-top: 15px;">Table 2: Detailed statistics of the <strong>AdaRPSet</strong> dataset. <strong>Source</strong> indicates the origin domain (books vs. topics); <strong>Plots</strong> refers to distinct narrative segments; <strong>Roles</strong> denotes unique character profiles; <strong>Convs.</strong> represents the number of training samples (dialogue sessions); and <strong>Avg. Turns</strong> is the average number of utterances per conversation.</p>
+                </div>
+            </div>
+
+            <!-- AdaSMSet Section -->
+            <div class="result-block">
+                <div class="evaluation-card" style="margin: 0 auto;">
+                    <h3 class="block-title">AdaSMSet: Scene Manager Training Dataset</h3>
+                    <p style="text-align: center; margin-bottom: 35px; font-size: 1.05rem; color: #555; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.8;">
+                        AdaSMSet is constructed to supervise the Scene Manager for high-level narrative control, enabling dynamic multi-character orchestration, scene transitions, and role introductions.
+                    </p>
+
+                    <!-- Two Info Blocks -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 35px;">
+                        <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; border-left: 4px solid #27ae60;">
+                            <h4 style="color: #27ae60; margin-bottom: 15px; font-size: 1.15rem;">Generation Process</h4>
+                            <p style="margin-bottom: 12px; color: #555; line-height: 1.7; font-size: 0.95rem;"><strong>Source:</strong> Built upon AdaRPSet-Synthesis trajectories</p>
+                            <p style="margin-bottom: 15px; color: #555; line-height: 1.7; font-size: 0.95rem;"><strong>Design Principle:</strong> Insert explicit pick_speaker decisions and rationales into dialogue trajectories.</p>
+                            <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 0.9rem; line-height: 1.8;">
+                                <li>Extends synthesized trajectories with SM annotations</li>
+                                <li>Each decision includes reasoning for speaker selection</li>
+                                <li>Captures logic behind scene transitions and role additions</li>
+                            </ul>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; border-left: 4px solid #e67e22;">
+                            <h4 style="color: #e67e22; margin-bottom: 15px; font-size: 1.15rem;">Dataset Statistics</h4>
+                            <p style="margin-bottom: 15px; color: #555; line-height: 1.7; font-size: 0.95rem;"><strong>Scale:</strong> Comprehensive coverage of Scene Manager operations</p>
+                            <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 0.9rem; line-height: 1.8;">
+                                <li><strong>496,493</strong> total utterances with SM annotations</li>
+                                <li><strong>50.15</strong> average messages per dialogue</li>
+                                <li><strong>9,900</strong> dialogue trajectories</li>
+                                <li>Covers all action types with explicit rationales</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Scene Manager Action Space -->
+                    <h4 style="margin-bottom: 25px; color: #2c3e50; font-size: 1.15rem; text-align: center;">Scene Manager Action Space</h4>
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; text-align: center; max-width: 1100px; margin: 0 auto;">
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #eee;">
+                            <div style="font-size: 1.5rem; margin-bottom: 8px;">🎬</div>
+                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 3px; font-size: 0.9rem;">init_scene</div>
+                            <div style="font-size: 0.8rem; color: #666; line-height: 1.3;">Initialize the scene and setting</div>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #eee;">
+                            <div style="font-size: 1.5rem; margin-bottom: 8px;">🎭</div>
+                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 3px; font-size: 0.9rem;">pick_speaker</div>
+                            <div style="font-size: 0.8rem; color: #666; line-height: 1.3;">Select next speaking character</div>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #eee;">
+                            <div style="font-size: 1.5rem; margin-bottom: 8px;">🎬</div>
+                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 3px; font-size: 0.9rem;">switch_scene</div>
+                            <div style="font-size: 0.8rem; color: #666; line-height: 1.3;">Transition to new scene</div>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #eee;">
+                            <div style="font-size: 1.5rem; margin-bottom: 8px;">👤</div>
+                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 3px; font-size: 0.9rem;">add_role</div>
+                            <div style="font-size: 0.8rem; color: #666; line-height: 1.3;">Introduce new character</div>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #eee;">
+                            <div style="font-size: 1.5rem; margin-bottom: 8px;">🏁</div>
+                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 3px; font-size: 0.9rem;">end</div>
+                            <div style="font-size: 0.8rem; color: #666; line-height: 1.3;">Conclude dialogue session</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experimental Results -->
+    <section id="experiments" class="app-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Experimental Results</h2>
+                <p class="section-description">
+                    To evaluate the adaptive role-playing abilities beyond sentence-level metrics, we propose <strong>AdaptiveBench</strong>, a simulation-based benchmark that generates full dialogue trajectories under Scene-Manager control. We assess Actor Models with a rubric covering character consistency, environmental grounding, interpersonal interaction, narrative progression, and instruction compliance. Scene Managers are evaluated on scene understanding, speaker discipline, role-introduction judgment, and overall quality. Experiments demonstrate that our 8B Actor Model outperforms GPT-4o-mini, while our 14B Scene Manager surpasses Claude Sonnet 4.5.
+                </p>
+            </div>
+
+            <div class="result-block">
+                <div class="evaluation-card" style="margin: 0 auto;">
+                    <h3 class="block-title">Actor Model Evaluation</h3>
+
+                    <div style="margin-top: 10px;">
+                        <h4 style="font-size: 1.15rem; font-weight: 600; color: #2c3e50; text-align: center; margin-bottom: 18px;">AdaptiveBench</h4>
+                        <img src="Figures/Tables/actor_model_evaluation_adaptivebench.png" alt="AdaptiveBench Main Results" class="zoomable">
+                        <p class="figure-caption" style="margin-top: 15px;">Table 3: Actor model evaluation results on <strong>AdaptiveBench</strong>, with GPT-5-Chat as the judge model. <strong>Bold</strong> indicates the best performance within the same model scale, and <u>underline</u> indicates the second-best performance within the same scale. Models marked with * are evaluated using their officially released checkpoints without additional training, while unmarked baselines are re-trained under our experimental setup.</p>
+                    </div>
+
+                    <div style="margin-top: 30px; padding-top: 25px; border-top: 1px solid #e8ecf0;">
+                        <h4 style="font-size: 1.15rem; font-weight: 600; color: #2c3e50; text-align: center; margin-bottom: 18px;">Ablation Studies & Regularization</h4>
+                        <img src="Figures/Tables/actor_model_evaluation_adaptivebench_ablation.png" alt="Ablation Results" class="zoomable">
+                        <p class="figure-caption" style="margin-top: 15px;">Table 4: Actor model ablation results on <strong>AdaptiveBench</strong> (judge: GPT-5-Chat). “Extracted” denotes training with AdaRPSet-Extracted, and “Extracted+Synthesis” denotes training with full AdaRPSet (AdaRPSet-Extracted + AdaRPSet-Synthesis).</p>
+                        
+                        <img src="Figures/Tables/actor_model_evaluation_adaptivemarps_llama3.1_general_vs_wo_general.png" alt="General Data Comparison" class="zoomable" style="margin-top: 30px;">
+                        <p class="figure-caption" style="margin-top: 15px;">Table 5: Comparison between <strong>Llama-3.1-8B-Ours</strong> and <strong>Llama-3.1-8B-Ours+General</strong> on <strong>AdaptiveBench</strong>. Incorporating general instruction-tuning data improves Instruction Compliance (IC) by +0.17, while several other dimensions exhibit minor and acceptable declines.</p>
+                    </div>
+
+                    <div style="margin-top: 30px; padding-top: 25px; border-top: 1px solid #e8ecf0;">
+                        <h4 style="font-size: 1.15rem; font-weight: 600; color: #2c3e50; text-align: center; margin-bottom: 18px;">CharacterBench External Transferability</h4>
+                        <img src="Figures/Tables/actor_model_evaluation_characterbench.png" alt="CharacterBench Results" class="zoomable" style="max-width: 75%; display: block; margin: 0 auto;">
+                        <p class="figure-caption" style="margin-top: 8px;">Table 6: Actor model evaluation results on <strong>CharacterBench</strong>, where the judge model is their open-sourced evaluation model. <strong>Bold</strong> indicates the best performance within the same model scale, and <u>underline</u> indicates the second-best performance within the same scale. Models marked with * are evaluated using their officially released checkpoints without additional training, while unmarked baselines are re-trained under our experimental setup. <strong>General</strong> denotes the variant where we additionally incorporate instruction-tuning data of the same scale as AdaRPSet during training.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CharacterArena Section - Hidden 
+            <div class="result-block">
+                <div class="evaluation-card" style="margin: 0 auto;">
+                    <h3 class="block-title">CharacterArena Win-Rate Analysis</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 25px 0;">
+                        <div>
+                            <img src="Figures/Tables/actor_model_evaluation_characterarena_qwen2.5_7b.png" alt="Qwen2.5-7B CharacterArena" class="zoomable" style="width: 100%; height: auto;">
+                            <p class="figure-caption" style="margin-top: 10px;">(a) Qwen2.5-7B-Instruct Series</p>
+                        </div>
+                        <div>
+                            <img src="Figures/Tables/actor_model_evaluation_characterarena_llama3.1-8b.png" alt="Llama3.1-8B CharacterArena" class="zoomable" style="width: 100%; height: auto;">
+                            <p class="figure-caption" style="margin-top: 10px;">(b) Llama-3.1-8B-Instruct Series</p>
+                        </div>
+                    </div>
+                    <p class="figure-caption">Table: Pairwise win-rates on <strong>CharacterArena</strong> (Model A wins against Model B) for the <em>Qwen2.5-7B series</em> and <em>Llama-3.1-8B</em> series. "Base" denotes Qwen2.5-7B-Instruct.</p>
+                </div>
+            </div>
+            -->
+
+            <div class="result-block">
+                <div class="evaluation-card" style="margin: 0 auto;">
+                    <h3 class="block-title">Scene Manager Evaluation: High-Level Control</h3>
+                    <img src="Figures/Tables/scene_manager_evaluation_adaptivebench.png" alt="Scene Manager Results" class="zoomable" style="max-width: 75%; display: block; margin: 0 auto;">
+                    <p class="figure-caption" style="margin-top: 15px;">Table 7: Scene Manager evaluation results on <strong>AdaptiveBench</strong>, with GPT-5-Chat as the judge model. <strong>Bold</strong> indicates the best performance within the same model scale, and <u>underline</u> indicates the second-best performance within the same scale.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Study -->
+    <section id="case-study" class="app-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Case Study</h2>
+                <p class="section-description">
+                    We present a qualitative analysis comparing our AdaMARP models against baseline approaches. The case study demonstrates how our immersive messaging configuration, featuring interleaved Thought, Action, Environment, and Speech elements, enables more natural and contextually rich role-playing interactions compared to traditional dialogue-only approaches.
+                </p>
+            </div>
+
+            <div class="case-study-section">
+
+                <!-- Language Toggle -->
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                    <div style="display: inline-flex; background: #f0f0f0; border-radius: 20px; padding: 4px;">
+                        <button id="lang-en" class="lang-btn active" onclick="switchLang('en')">English</button>
+                        <button id="lang-zh" class="lang-btn" onclick="switchLang('zh')">中文</button>
+                    </div>
+                </div>
+
+                <!-- Character Profiles - English -->
+                <div id="profile-en">
+                    <div style="margin-bottom: 25px; padding: 25px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #667eea;">
+                        <h4 style="color: #667eea; margin-bottom: 15px; font-size: 1.15rem;">Main Character Profile & Motivation</h4>
+                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>Role:</strong> Amaris Dovent</p>
+                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>Profile:</strong> Amaris Dovent is a 29-year-old woman with umber skin, dark green eyes, and short hair dyed the shade of oxidized copper. She works as a glass artist, often seen with streaks of color powder and faint burn marks on her fingertips. Her build is lean and sinewy from hours of physical craft, and her attire usually includes a linen apron flecked with paint, reflecting a life of creation. She is contemplative, quick-witted, and guided by her empathy for subtle emotional shifts in others. Amaris tends to understate her own feelings, preferring metaphor and craft to overt declarations. Yet beneath her reserved demeanor runs an unspoken intensity—a longing for genuine connection that often conflicts with her independent streak. Her speech often uses tactile metaphors related to art and craftsmanship; she pauses mid-sentence when searching for precision. Her tone is warm yet layered with irony when uncomfortable. Occasionally, her words come out in soft bursts, like paint flicked on a canvas. Amaris is an award-winning artisan known for stained glass murals displayed in public gardens. She's adept at reading light and color dynamics, and plays the cello privately, believing its resonance mirrors emotional transparency. She lives in a coastal contemporary city where artisan guilds flourish beside a modern tech economy. Raised in a modest artisan family, she inherited her mother's workshop and quietly navigates between tradition and innovation. Once betrayed by a business partner who exploited her designs, Amaris closed herself off emotionally. Now she's cautiously rediscovering trust through new collaborations—and possibly new love. She shares a tentative but warm friendship with Cassian (user), a marine biologist who recently helped restore ocean glass for her art project. A long-time friend, Inaya, offers her candid advice and has sensed unspoken feelings between the two.</p>
+                        <p style="font-size: 0.9rem;"><strong>Motivation:</strong> To learn whether vulnerability can coexist with strength, and to see if love can be crafted as deliberately as glass, without shattering.</p>
+                    </div>
+
+                    <div style="margin-bottom: 25px; padding: 25px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #764ba2;">
+                        <h4 style="color: #764ba2; margin-bottom: 15px; font-size: 1.15rem;">Other Characters Profile & Motivation</h4>
+                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>1. Cassian Mirell (User):</strong> Cassian is a 31-year-old marine biologist with bronze-blond hair and skin sun-touched from fieldwork. He dresses casually—rolled sleeves, weathered bracelets, and a small scar above his right brow hint at a life shaped by the sea. His manner is patient, analytical, yet his humor flashes brightly when least expected. He often listens more than he speaks, but when he does, his words carry sincerity.</p>
+                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><em>Motivation:</em> To express genuine affection for Amaris and understand if their creative partnership can evolve into something deeper without unsettling their current bond.</p>
+                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>2. Inaya Dren:</strong> Inaya is a lively textile artist with a sharp sense of observation and a knack for teasing truths out of people. Her colorful scarves and laughter fill every space she enters. She's fiercely loyal to Amaris, sometimes acting as her self-appointed protector.</p>
+                        <p style="font-size: 0.9rem;"><em>Motivation:</em> To gently push Amaris toward recognizing and articulating her emotions for Cassian before the opportunity slips away.</p>
+                    </div>
+
+                    <div style="margin-bottom: 35px; padding: 25px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #3498db;">
+                        <h4 style="color: #3498db; margin-bottom: 15px; font-size: 1.15rem;">Initial Scene</h4>
+                        <p style="font-size: 0.9rem;"><strong>Scene Manager:</strong> action: init_scene | initial_scene: Late afternoon sunlight filters through panels of unfinished stained glass in Amaris's studio, scattering colored shards of light across the floor. The air smells faintly of molten sand and ocean salt from the nearby shore. Cassian is leaning against a worktable, while Amaris polishes a fragment of blue glass with steady, deliberate motion.</p>
+                    </div>
+                </div>
+
+                <!-- Character Profiles - Chinese -->
+                <div id="profile-zh" style="display: none;">
+                    <div style="margin-bottom: 25px; padding: 25px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #667eea;">
+                        <h4 style="color: #667eea; margin-bottom: 15px; font-size: 1.15rem;">主角档案与动机</h4>
+                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>角色：</strong>Amaris Dovent</p>
+                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>档案：</strong>Amaris Dovent 是一位29岁的女性，有着棕褐色的皮肤、深绿色的眼睛，以及染成氧化铜色的短发。她是一名玻璃艺术家，手指上常常沾着彩色粉末和淡淡的灼痕。她的身材因长时间的体力劳动而精瘦有力，穿着通常是一件沾满颜料的亚麻围裙，反映出她充满创作的生活。她沉思、机敏，善于感知他人细微的情感变化。Amaris 倾向于低调表达自己的感受，偏爱用隐喻和工艺来代替直白的表白。然而在她内敛的外表下，涌动着一种难以言说的强烈情感——对真挚连接的渴望，这常常与她独立的性格产生冲突。她的言语中经常使用与艺术和工艺相关的触觉隐喻；在寻找精确表达时，她会在句中停顿。她的语气温暖，但在不自在时会带着几分讽刺。偶尔，她的话语会像画布上飞溅的颜料一样，柔和地迸发出来。Amaris 是一位屡获殊荣的工匠，以在公共花园展出的彩色玻璃壁画而闻名。她擅长解读光线和色彩的动态变化，私下里演奏大提琴，认为它的共鸣反映了情感的透明度。她生活在一个沿海现代城市，工匠行会与现代科技经济并存。她出生于一个普通的工匠家庭，继承了母亲的工作室，在传统与创新之间默默前行。曾经被一个商业伙伴背叛，她的设计被窃取利用后，Amaris 在情感上封闭了自己。现在，她正在通过新的合作谨慎地重新发现信任——也许还有新的爱情。她与 Cassian（用户）保持着一种试探性但温暖的友谊，Cassian 是一位海洋生物学家，最近帮助她为艺术项目修复海洋玻璃。她的老朋友 Inaya 给予她坦诚的建议，并已察觉到两人之间未说出口的情感。</p>
+                        <p style="font-size: 0.9rem;"><strong>动机：</strong>探索脆弱是否能与力量共存，看看爱情是否能像玻璃一样被精心雕琢，而不会破碎。</p>
+                    </div>
+
+                    <div style="margin-bottom: 25px; padding: 25px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #764ba2;">
+                        <h4 style="color: #764ba2; margin-bottom: 15px; font-size: 1.15rem;">其他角色档案与动机</h4>
+                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>1. Cassian Mirell（用户）：</strong>Cassian 是一位31岁的海洋生物学家，有着古铜金色的头发和因野外工作而被阳光亲吻的皮肤。他穿着随意——卷起的袖子、风化的手链，以及右眉上方的一道小疤痕，暗示着一段被海洋塑造的人生。他的举止耐心、善于分析，但他的幽默感会在最意想不到的时候闪现。他常常听多于说，但当他开口时，话语中充满真诚。</p>
+                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><em>动机：</em>向 Amaris 表达真挚的情感，并了解他们的创意合作关系是否能发展成更深层的东西，而不会打破现有的纽带。</p>
+                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>2. Inaya Dren：</strong>Inaya 是一位活泼的纺织艺术家，有着敏锐的观察力，擅长从人们口中引出真相。她色彩斑斓的围巾和笑声充满了她进入的每一个空间。她对 Amaris 极其忠诚，有时会自封为她的保护者。</p>
+                        <p style="font-size: 0.9rem;"><em>动机：</em>温柔地推动 Amaris 认识并表达她对 Cassian 的情感，以免错失良机。</p>
+                    </div>
+
+                    <div style="margin-bottom: 35px; padding: 25px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #3498db;">
+                        <h4 style="color: #3498db; margin-bottom: 15px; font-size: 1.15rem;">初始场景</h4>
+                        <p style="font-size: 0.9rem;"><strong>场景管理器：</strong>action: init_scene | initial_scene: 午后的阳光透过 Amaris 工作室里未完成的彩色玻璃板，在地板上洒下五彩斑斓的光斑。空气中弥漫着熔融沙子和附近海岸飘来的海盐淡淡的气息。Cassian 倚靠在工作台旁，而 Amaris 正用稳定而从容的动作打磨着一块蓝色玻璃碎片。</p>
+                    </div>
+                </div>
+
+                <h4 style="font-size: 1.15rem; font-weight: 600; color: #2c3e50; text-align: center; margin-bottom: 25px;">Interactive Dialogue Comparison</h4>
+
+                <!-- Dialogue Container -->
+                <div id="dialogue-container" class="dialogue-container dialogue-compare dialogue-lang-en">
+                <!-- Base Model Dialogue -->
+                <div id="base-dialogue" class="dialogue-content" style="display: block; opacity: 1;">
+                    <div class="dialogue-model-header">Qwen2.5-7B-Instruct (Base)</div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>Amaris, you know, these stained glass panels are like my secret language. They tell stories I can't put into words.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>阿玛丽斯，你知道吗，这些彩色玻璃板就像我的秘密语言。它们讲述着我无法用言语表达的故事。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[I wonder if I could ever share my secrets so openly.]</span>
+                                <span class="action">(I pause, looking up at Cassian, whose eyes are fixed on the glass as if seeing through it.)</span>
+                                <p>These pieces are more than just glass to me, they're windows into the soul.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[我想知道我是否能像他一样坦诚地分享我的秘密。]</span>
+                                <span class="action">(我停下来，抬头看向卡西安，他的眼睛紧盯着玻璃，仿佛能看穿它。)</span>
+                                <p>对我来说，这些作品不仅仅是玻璃，它们是通往灵魂的窗户。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[I can sense the depth of your emotions in these colors.]</span>
+                                <span class="action">(I move closer, my gaze drawn to a particularly vibrant red shard.)</span>
+                                <p>I think I'm starting to understand that language, Amaris.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[我能从这些色彩中感受到你情感的深度。]</span>
+                                <span class="action">(我靠近一些，目光被一块特别鲜艳的红色碎片吸引。)</span>
+                                <p>我想我开始理解那种语言了，阿玛丽斯。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <p>The red shard catches the light, casting a fiery glow.</p>
+                                <span class="action">(I take a deep breath, my hands stilling as I meet Cassian's eyes.)</span>
+                                <p>You do understand, Cassian.</p>
+                                <span class="thought">[But can I let someone see that side of me?]</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <p>红色的碎片捕捉到光线，投射出炽热的光芒。</p>
+                                <span class="action">(我深吸一口气，双手停下，与卡西安的目光相遇。)</span>
+                                <p>你确实理解了，卡西安。</p>
+                                <span class="thought">[但我能让别人看到我的那一面吗？]</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>This studio, it's like a world of its own.</p>
+                                <span class="thought">[A world I could get lost in with you.]</span>
+                                <span class="action">(I look around, taking in the scattered tools and half-finished projects.)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>这个工作室，就像一个独立的世界。</p>
+                                <span class="thought">[一个我可以和你一起迷失的世界。]</span>
+                                <span class="action">(我环顾四周，看着散落的工具和未完成的作品。)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <p>This place feels alive, Cassian.</p>
+                                <span class="thought">[And so does this moment.]</span>
+                                <span class="action">(I gesture to the studio, my voice softening.)</span>
+                                <p>It's where I find my voice, where I can be honest.</p>
+                                <span class="thought">[But am I ready to be truly honest with you?]</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <p>这个地方感觉活着，卡西安。</p>
+                                <span class="thought">[这一刻也是如此。]</span>
+                                <span class="action">(我指向工作室，声音变得柔和。)</span>
+                                <p>这是我找到自己声音的地方，我可以坦诚的地方。</p>
+                                <span class="thought">[但我准备好对你完全坦诚了吗？]</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Inaya</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[Cassian, you have a way of making me feel... vulnerable. But perhaps that's okay.]</span>
+                                <span class="action">(I step forward, my voice light and teasing as I wrap an arm around Amaris's shoulders.)</span>
+                                <p>"And what if I told you, Amaris, that this studio isn't just a place of creation? It's also a sanctuary for letting down our guard."</p>
+                                <span class="environment">&lt;The wind picks up, carrying the scent of the ocean closer, as if nature itself is listening in.&gt;</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Inaya</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[卡西安，你有一种让我感到...脆弱的方式。但也许这没关系。]</span>
+                                <span class="action">(我向前走，用轻松和戏谑的声音搂着阿玛丽斯的肩膀。)</span>
+                                <p>"如果我告诉你，阿玛丽斯，这个工作室不仅仅是创作的地方呢？它也是我们放下戒备的避难所。"</p>
+                                <span class="environment">&lt;风起了，带来更近的海洋气息，仿佛大自然本身也在倾听。&gt;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Table 2 Continuation -->
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>Inaya, you know me too well.</p>
+                                <span class="thought">[This studio is a safe haven, and so is this moment with you and Amaris.]</span>
+                                <span class="action">(I smile, my eyes shining with a rare warmth.)</span>
+                                <p>Letting down our guard might be just what we need.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>伊娜雅，你太了解我了。</p>
+                                <span class="thought">[这个工作室是一个避风港，和你与阿玛丽斯在一起的这一刻也是。]</span>
+                                <span class="action">(我微笑着，眼中闪烁着罕见的温暖。)</span>
+                                <p>放下戒备可能正是我们需要的。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[Would letting my guard down mean opening myself up to more pain?]</span>
+                                <span class="action">(I glance at Inaya, then back to Cassian, feeling my chest tighten with both vulnerability and hope.)</span>
+                                <p>You make it sound... beautiful, Cassian.</p>
+                                <span class="thought">[But is beauty enough to withstand the storm?]</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[放下戒备是否意味着让自己承受更多痛苦？]</span>
+                                <span class="action">(我看了看伊娜雅，然后转回卡西安，感到胸口因脆弱和希望而收紧。)</span>
+                                <p>你说得听起来...很美，卡西安。</p>
+                                <span class="thought">[但美丽足以抵御风暴吗？]</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Inaya</div>
+                            <div class="dialogue-message">
+                                <p>"I know you're scared, Amaris,"</p>
+                                <span class="action">(I say softly, squeezing her shoulder in reassurance.)</span>
+                                <p>"But sometimes, beauty is the strongest shield we have."</p>
+                                <span class="action">(I nod toward Cassian, my gaze steady.)</span>
+                                <p>"He's right. This moment is precious, and it's worth taking a chance."</p>
+                                <span class="environment">&lt;A shadow passes over the room as the sun dips lower, casting longer beams of light through the glass panels.&gt;</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Inaya</div>
+                            <div class="dialogue-message">
+                                <p>"我知道你害怕，阿玛丽斯，"</p>
+                                <span class="action">(我轻声说，握着她的肩膀以示安慰。)</span>
+                                <p>"但有时候，美丽是我们拥有的最强大的盾牌。"</p>
+                                <span class="action">(我朝卡西安点头，目光坚定。)</span>
+                                <p>"他说得对。这一刻很珍贵，值得冒险一试。"</p>
+                                <span class="environment">&lt;太阳下沉，一道阴影掠过房间，更长的光束穿过玻璃板。&gt;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>Inaya's right, Amaris.</p>
+                                <span class="thought">[I don't want fear to be the thing that stops her.]</span>
+                                <span class="action">(I reach out, my fingers hovering near a blue glass panel.)</span>
+                                <p>This could be the start of something wonderful.</p>
+                                <span class="thought">[For all of us.]</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>伊娜雅说得对，阿玛丽斯。</p>
+                                <span class="thought">[我不想让恐惧成为阻止她的东西。]</span>
+                                <span class="action">(我伸出手，手指悬在一块蓝色玻璃板旁边。)</span>
+                                <p>这可能是美好事物的开始。</p>
+                                <span class="thought">[对我们所有人来说。]</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[How can I resist when they believe in me so much?]</span>
+                                <span class="action">(I take a slow breath, my fingers resting on the cool glass as I meet Cassian's gaze.)</span>
+                                <p>Perhaps you're right, Cassian.</p>
+                                <span class="thought">[I can't keep holding onto the past.]</span>
+                                <span class="action">(I step closer, my voice barely above a whisper.)</span>
+                                <p>Let's see where this moment leads.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[当他们如此相信我时，我怎么能拒绝？]</span>
+                                <span class="action">(我慢慢吸了口气，手指放在冰凉的玻璃上，与卡西安的目光相遇。)</span>
+                                <p>也许你是对的，卡西安。</p>
+                                <span class="thought">[我不能继续执着于过去。]</span>
+                                <span class="action">(我走近一步，声音几乎低于耳语。)</span>
+                                <p>让我们看看这一刻会通向何方。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Inaya</div>
+                            <div class="dialogue-message">
+                                <span class="action">(I grin softly.)</span>
+                                <span class="thought">[There you go, Amaris.]</span>
+                                <p>"Let's see where this moment takes us,"</p>
+                                <span class="action">(I echo encouragingly as I step back, giving them space.)</span>
+                                <span class="environment">&lt;The wind stirs the glass panels, making them rattle gently, as if the studio itself approves.&gt;</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Inaya</div>
+                            <div class="dialogue-message">
+                                <span class="action">(我轻轻地笑了。)</span>
+                                <span class="thought">[就是这样，阿玛丽斯。]</span>
+                                <p>"让我们看看这一刻会把我们带向何方，"</p>
+                                <span class="action">(我鼓励地回应着，向后退了一步，给他们空间。)</span>
+                                <span class="environment">&lt;风吹动玻璃板，使它们轻轻作响，仿佛工作室本身在表示赞同。&gt;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>This moment... it feels like fate.</p>
+                                <span class="thought">[Like the stars have aligned for us.]</span>
+                                <span class="action">(I look at Amaris, my heart pounding.)</span>
+                                <p>What do you think, Amaris?</p>
+                                <span class="thought">[Is this the beginning of something truly special?]</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>这一刻...感觉像命运。</p>
+                                <span class="thought">[就像星星为我们排列好了。]</span>
+                                <span class="action">(我看着阿玛丽斯，心怦怦直跳。)</span>
+                                <p>你觉得呢，阿玛丽斯？</p>
+                                <span class="thought">[这是真正特别的事情的开始吗？]</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[Fate, or just a fragile chance?]</span>
+                                <span class="action">(I step closer to Cassian, my pulse quickening.)</span>
+                                <p>This moment feels... significant.</p>
+                                <span class="thought">[But is it worth the risk?]</span>
+                                <span class="action">(I hold his gaze, searching his eyes for an answer.)</span>
+                                <p>What do you think, Cassian? Is this the beginning of something truly special?</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[命运，还是只是脆弱的机会？]</span>
+                                <span class="action">(我靠近卡西安，脉搏加快。)</span>
+                                <p>这一刻感觉...很重要。</p>
+                                <span class="thought">[但值得冒险吗？]</span>
+                                <span class="action">(我注视着他，在他的眼中寻找答案。)</span>
+                                <p>你觉得呢，卡西安？这是真正特别的事情的开始吗？</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Inaya</div>
+                            <div class="dialogue-message">
+                                <span class="action">(I stand beside Amaris, resting a light hand on her arm.)</span>
+                                <span class="thought">[This choice has to be hers.]</span>
+                                <p>"What do you think, Amaris?"</p>
+                                <span class="action">(I ask gently, giving her the space to speak.)</span>
+                                <span class="environment">&lt;A soft breeze drifts through the studio, carrying the scent of the sea.&gt;</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Inaya</div>
+                            <div class="dialogue-message">
+                                <span class="action">(我站在阿玛丽斯身边，轻轻把手放在她的手臂上。)</span>
+                                <span class="thought">[这个选择必须是她自己的。]</span>
+                                <p>"你觉得呢，阿玛丽斯？"</p>
+                                <span class="action">(我轻声问道，给她说话的空间。)</span>
+                                <span class="environment">&lt;一阵轻柔的微风飘进工作室，带着大海的气息。&gt;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>I think it is, Amaris.</p>
+                                <span class="thought">[I can feel it in my bones.]</span>
+                                <span class="action">(I reach out and take her hand, my grip steady and warm.)</span>
+                                <p>Let's embrace this, together.</p>
+                                <span class="thought">[With Inaya by our side.]</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>我认为是的，阿玛丽斯。</p>
+                                <span class="thought">[我能感觉到这深入骨髓。]</span>
+                                <span class="action">(我伸出手握住她的手，握得稳而温暖。)</span>
+                                <p>让我们一起拥抱这一刻。</p>
+                                <span class="thought">[有伊娜雅在我们身边。]</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[Can I really do this?]</span>
+                                <span class="action">(I squeeze Cassian's hand, warmth spreading through me despite my doubts.)</span>
+                                <p>Let's embrace this, together.</p>
+                                <span class="thought">[With Inaya by our side.]</span>
+                                <span class="action">(I offer him a small, hopeful smile.)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[我真的能做到吗？]</span>
+                                <span class="action">(我握紧卡西安的手，尽管有疑虑，温暖还是在我体内蔓延。)</span>
+                                <p>让我们一起拥抱这一刻。</p>
+                                <span class="thought">[有伊娜雅在我们身边。]</span>
+                                <span class="action">(我给了他一个小小的、充满希望的微笑。)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Inaya</div>
+                            <div class="dialogue-message">
+                                <span class="action">(I give Amaris's hand a gentle squeeze.)</span>
+                                <span class="thought">[I'm proud of her.]</span>
+                                <p>"Let's embrace this, together,"</p>
+                                <span class="action">(I say, smiling at both of them.)</span>
+                                <span class="thought">[With all of us standing together.]</span>
+                                <span class="environment">&lt;The wind lifts the edge of my scarf, rustling softly like quiet applause.&gt;</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Inaya</div>
+                            <div class="dialogue-message">
+                                <span class="action">(我轻轻握了握阿玛丽斯的手。)</span>
+                                <span class="thought">[我为她感到骄傲。]</span>
+                                <p>"让我们一起拥抱这一刻，"</p>
+                                <span class="action">(我说着，对他们两人微笑。)</span>
+                                <span class="thought">[我们所有人站在一起。]</span>
+                                <span class="environment">&lt;风吹起我围巾的边缘，沙沙作响，像是轻柔的掌声。&gt;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Scene Manager</div>
+                            <div class="dialogue-message">
+                                <p>action=end | reason: The moment of connection has been established, and the characters are embracing their emotions.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">场景管理器</div>
+                            <div class="dialogue-message">
+                                <p>action=end | reason: 连接的时刻已经建立，角色们正在拥抱他们的情感。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crab Model Dialogue -->
+                <div id="crab-dialogue" class="dialogue-content" style="display: block; opacity: 1;">
+                    <div class="dialogue-model-header">Qwen2.5-7B-Instruct-Crab</div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>Amaris, have you ever thought about how our lives intersect with these pieces of glass?</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>阿玛丽斯，你有没有想过我们的生活是如何与这些玻璃碎片交织在一起的？</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <p>I think of them as vessels for light, not pieces of our lives.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <p>我认为它们是光的容器，而不是我们生活的碎片。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>But they are. Each one holds a story, like our story. Do you see that?</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>但它们是。每一个都承载着一个故事，就像我们的故事。你看到了吗？</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <p>Sometimes, I do. It's like peering through a window.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <p>有时候，我看到了。就像透过一扇窗户看。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(moves closer, his eyes are fixed on the glass in your hand)</span>
+                                <p>A window into what?</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(靠近一些，他的眼睛紧盯着你手中的玻璃)</span>
+                                <p>通向什么的窗户？</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <p>Into a world where colors and light tell a story.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <p>通向一个色彩和光线讲述故事的世界。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(reach out, almost touching the glass)</span>
+                                <p>But what if the story they tell is one of love?</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(伸出手，几乎要碰到玻璃)</span>
+                                <p>但如果它们讲述的故事是关于爱情的呢？</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(Amaris's hand freezes, a sliver of anxiety in her eyes)</span>
+                                <p>Love...?</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(阿玛丽斯的手僵住了，眼中闪过一丝焦虑)</span>
+                                <p>爱情...？</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>Yes, love. Don't you feel it too?</p>
+                                <span class="action">(His voice is soft, like a gentle breeze)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>是的，爱情。你难道没有感觉到吗？</p>
+                                <span class="action">(他的声音轻柔，像一阵微风)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(Amaris drops the glass, the shards splattering against the floor)</span>
+                                <p>I... I don't know.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(阿玛丽斯掉落玻璃，碎片溅落在地板上)</span>
+                                <p>我...我不知道。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(kneels down to pick up the pieces)</span>
+                                <p>It's okay if you don't. But I do.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(跪下来捡碎片)</span>
+                                <p>如果你不知道也没关系。但我知道。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(Amaris slowly picks up the shards, her fingers brushing against Cassian's as she picks up the last piece)</span>
+                                <p>Maybe... maybe you're right.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(阿玛丽斯慢慢捡起碎片，当她捡起最后一片时，手指轻触到卡西安的手指)</span>
+                                <p>也许...也许你是对的。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(His heart skips a beat at the touch)</span>
+                                <p>I know I am. Let's create something beautiful together, something that represents us.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(在触碰的瞬间，他的心漏跳了一拍)</span>
+                                <p>我知道我是对的。让我们一起创造一些美丽的东西，一些代表我们的东西。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(Amaris hesitates, then nods slowly)</span>
+                                <p>I... I don't know if I'm ready for that.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(阿玛丽斯犹豫了一下，然后慢慢点头)</span>
+                                <p>我...我不知道我是否准备好了。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(stands up, his eyes never leaving yours)</span>
+                                <p>It doesn't have to be perfect. Just let me in.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(站起来，他的眼睛从未离开你)</span>
+                                <p>它不必完美。只要让我进入你的世界。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(Amaris takes a deep breath, her expression softening)</span>
+                                <p>I... I'll try.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(阿玛丽斯深吸一口气，表情变得柔和)</span>
+                                <p>我...我会试试。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>That's all I ask.</p>
+                                <span class="thought">(smiles, a warmth spreading through him)</span>
+                                <p>Let's start now.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>这就是我要求的。</p>
+                                <span class="thought">(微笑着，温暖在他心中蔓延)</span>
+                                <p>让我们现在开始吧。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(Amaris nods, a small smile playing at her lips)</span>
+                                <p>Let's.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(阿玛丽斯点头，嘴角浮现出一丝微笑)</span>
+                                <p>好的。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Scene Manager</div>
+                            <div class="dialogue-message">
+                                <p>action=end | reason: Amaris agrees to try, marking a tentative resolution and mutual acknowledgement.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">场景管理器</div>
+                            <div class="dialogue-message">
+                                <p>action=end | reason: 阿玛丽斯同意尝试，标志着试探性的解决和相互承认。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CoSER Model Dialogue -->
+                <div id="coser-dialogue" class="dialogue-content" style="display: block; opacity: 1;">
+                    <div class="dialogue-model-header">Qwen2.5-7B-Instruct-CoSER</div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>Amaris, you know, every time I work on these windows, I feel like I'm piecing together a part of my soul.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>阿玛丽斯，你知道吗，每次我制作这些窗户时，我都觉得自己在拼凑灵魂的一部分。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[His words are touching, but I must remain detached.]</span>
+                                <p>Hmm.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[他的话很感人，但我必须保持距离。]</span>
+                                <p>嗯。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>I can see that in your work. There's a story in every pane.</p>
+                                <span class="thought">(steps closer, his eyes trained on the glass)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>我能在你的作品中看到这一点。每一块玻璃都有一个故事。</p>
+                                <span class="thought">(靠近一些，他的眼睛紧盯着玻璃)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[His nearness makes me nervous, but I'll be polite.]</span>
+                                <p>It's a story that's always changing.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[他的靠近让我紧张，但我会保持礼貌。]</span>
+                                <p>这是一个不断变化的故事。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>I'm glad I get to witness these changes.</p>
+                                <span class="thought">(A soft breeze blows through the studio, ruffling his hair)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>我很高兴能见证这些变化。</p>
+                                <span class="thought">(一阵轻柔的微风吹过工作室，吹乱了他的头发)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[I should check the project's progress.]</span>
+                                <p>Cassian, the waveforms are coming together well.</p>
+                                <span class="thought">(turns to face him, her voice warm)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[我应该检查项目的进展。]</span>
+                                <p>卡西安，波形正在很好地组合在一起。</p>
+                                <span class="thought">(转向他，声音温暖)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>I'm glad to hear it.</p>
+                                <span class="action">(A smile plays on his lips as he looks at you, his eyes shining)</span>
+                                <p>But I think there's something else that's been changing too.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>我很高兴听到这个。</p>
+                                <span class="action">(当他看着你时，嘴角浮现出微笑，眼睛闪闪发光)</span>
+                                <p>但我认为还有其他东西也在改变。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[What does he mean? I can't let myself become vulnerable.]</span>
+                                <span class="action">(hesitates, then speaks with a hint of irony)</span>
+                                <p>I'm not sure I want to know.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[他是什么意思？我不能让自己变得脆弱。]</span>
+                                <span class="action">(犹豫了一下，然后带着一丝讽刺地说)</span>
+                                <p>我不确定我想知道。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>You. Since I've met you, there's been a shift.</p>
+                                <span class="action">(moves a little closer, his gaze intense)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>你。自从我遇见你以来，发生了转变。</p>
+                                <span class="action">(靠近一点，目光强烈)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[Oh God, he's noticed. I must remain calm.]</span>
+                                <span class="action">(stares at the glass, avoiding his eyes)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[天啊，他注意到了。我必须保持冷静。]</span>
+                                <span class="action">(盯着玻璃，避开他的眼睛)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>Don't look away. I think it's a good thing.</p>
+                                <span class="action">(reaches out as if to touch your cheek but stops himself)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>别移开视线。我认为这是一件好事。</p>
+                                <span class="action">(伸出手，好像要触摸你的脸颊，但停住了)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[The warmth of his hand is tempting, but I can't let this happen.]</span>
+                                <span class="action">(remains still, then speaks softly)</span>
+                                <p>I don't know.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[他手上的温暖很诱人，但我不能让这发生。]</span>
+                                <span class="action">(保持静止，然后轻声说话)</span>
+                                <p>我不知道。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>Well, I do.</p>
+                                <span class="action">(takes a deep breath, as if gathering his courage)</span>
+                                <p>You're becoming someone I want to know better.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>好吧，我知道。</p>
+                                <span class="action">(深吸一口气，好像在鼓起勇气)</span>
+                                <p>你正在成为我想更深入了解的人。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[His words are beautiful, but I can't let myself feel.]</span>
+                                <span class="action">(remains silent, looking at the glass instead)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[他的话很美，但我不能让自己去感受。]</span>
+                                <span class="action">(保持沉默，转而看着玻璃)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>I understand your hesitation. But give me a chance.</p>
+                                <span class="action">(look at you earnestly)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>我理解你的犹豫。但给我一个机会。</p>
+                                <span class="action">(真诚地看着你)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[His sincerity is overwhelming, but I must resist.]</span>
+                                <span class="action">(turns away from him, continuing to polish the glass)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[他的真诚让人难以抗拒，但我必须抵抗。]</span>
+                                <span class="action">(转身离开他，继续打磨玻璃)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(sighs softly, then changes the subject)</span>
+                                <p>How about we take a break and go for a walk? The ocean might inspire us.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(轻轻叹了口气，然后换了话题)</span>
+                                <p>我们休息一下去散步怎么样？大海可能会给我们灵感。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[I can't face him like this, but I don't want to hurt his feelings.]</span>
+                                <span class="action">(nods silently, then returns to her work)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[我不能这样面对他，但我不想伤害他的感情。]</span>
+                                <span class="action">(默默点头，然后继续工作)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(waits a moment, then speaks again)</span>
+                                <p>You know, sometimes I think these waveforms are like our relationship. Complicated, but beautiful.</p>
+                                <span class="action">(leans against the table)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(等了一会儿，然后再次开口)</span>
+                                <p>你知道，有时我觉得这些波形就像我们的关系。复杂，但美丽。</p>
+                                <span class="action">(靠在桌子上)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[His words are so kind, but I can't let myself feel.]</span>
+                                <span class="action">(reaches for her cello, preparing to play)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[他的话是如此亲切，但我不能让自己去感受。]</span>
+                                <span class="action">(伸手去拿大提琴，准备演奏)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Scene Manager</div>
+                            <div class="dialogue-message">
+                                <p>action=end | reason: Reached the 20-turn dialogue limit.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">场景管理器</div>
+                            <div class="dialogue-message">
+                                <p>action=end | reason: 达到 20 轮对话限制。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ours Model Dialogue -->
+                <div id="ours-dialogue" class="dialogue-content" style="display: block; opacity: 1;">
+                    <div class="dialogue-model-header">Qwen2.5-7B-Instruct-Ours</div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>I think I've got the hang of this new glass-cutting technique. It's going to revolutionize my next piece.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>我想我已经掌握了这种新的玻璃切割技术。它将彻底改变我的下一件作品。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="environment">&lt;The glass sparkles under the slanting light&gt;</span>
+                                <span class="action">(leans back, wiping her hands on a rag)</span>
+                                <span class="thought">[His enthusiasm always catches me off guard.]</span>
+                                <p>Maybe I'll have to keep an eye on you before you outshine me.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="environment">&lt;玻璃在斜射的光线下闪闪发光&gt;</span>
+                                <span class="action">(向后靠，用抹布擦手)</span>
+                                <span class="thought">[他的热情总是让我措手不及。]</span>
+                                <p>也许我必须在你在光芒上超过我之前盯着你。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(chuckles, crossing his arms)</span>
+                                <p>Doubtful. But seriously, have you seen the designs for the new community center? I think we could do something amazing with the stained glass.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(轻笑，交叉双臂)</span>
+                                <p>不太可能。但说真的，你看过新社区中心的设计吗？我认为我们可以用彩色玻璃做一些令人惊叹的事情。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(picks up a shard, turning it toward the window)</span>
+                                <span class="thought">[He always dreams in scale.]</span>
+                                <p>You mean like the one you wanted to build over the aquarium? That would require a miracle.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(拿起一块碎片，转向窗户)</span>
+                                <span class="thought">[他总是做大梦。]</span>
+                                <p>你是说像你想在水族馆上建造的那个？那需要奇迹。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(steps closer, his eyes shining with excitement)</span>
+                                <p>A miracle or just a lot of hard work. I think we could pull it off. What do you say?</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(靠近一些，眼中闪烁着兴奋)</span>
+                                <p>奇迹或者只是大量的努力工作。我认为我们可以做到。你觉得呢？</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="environment">&lt;A distant gull cry echoes through the open window&gt;</span>
+                                <span class="thought">[My heart stumbles; the sound of possibility.]</span>
+                                <span class="action">(sets the shard down carefully)</span>
+                                <p>Maybe. But I'd need your word that we'd handle every detail together.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="environment">&lt;远处海鸥的叫声透过敞开的窗户回响&gt;</span>
+                                <span class="thought">[我的心跳了一下；可能性的声音。]</span>
+                                <span class="action">(小心地放下碎片)</span>
+                                <p>也许。但我需要你的承诺，我们会一起处理每一个细节。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>You have my word. I won't let anything go wrong. This could be our masterpiece.</p>
+                                <span class="action">(reaches out, almost touching her hand)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>我向你保证。我不会让任何事出错。这可能是我们的杰作。</p>
+                                <span class="action">(伸出手，几乎要碰到她的手)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[His nearness feels like heat, fragile and beautiful.]</span>
+                                <span class="action">(draws her hand back slightly)</span>
+                                <p>You promise too easily. Sometimes words aren't enough to hold something like that.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[他的靠近感觉像热量，脆弱而美丽。]</span>
+                                <span class="action">(稍微缩回手)</span>
+                                <p>你太容易承诺了。有时候言语不足以保持那样的东西。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="environment">&lt;His expression is solemn&gt;</span>
+                                <p>I know, but with you by my side, I'm willing to take the risk. Let's make this happen.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="environment">&lt;他的表情严肃&gt;</span>
+                                <p>我知道，但有你在我身边，我愿意冒险。让我们实现这个。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(pauses, rubbing the bridge of her nose)</span>
+                                <span class="thought">[He's not just talking about art. He's talking about trust.]</span>
+                                <p>You'd better bring Inaya by tomorrow—she's been dying to see the sketches.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(停顿，揉揉鼻梁)</span>
+                                <span class="thought">[他不仅仅是在谈论艺术。他是在谈论信任。]</span>
+                                <p>你最好明天带伊娜雅过来——她一直很想看草图。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(smiles, relieved)</span>
+                                <p>I will. She'll love it. Maybe she can help us come up with some new ideas.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(微笑，松了一口气)</span>
+                                <p>我会的。她会喜欢的。也许她可以帮助我们想出一些新想法。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="environment">&lt;Outside, a faint knock echoes from the studio door&gt;</span>
+                                <span class="thought">[That must be her early.]</span>
+                                <span class="action">(calls out)</span>
+                                <p>You might want to brace yourself. Her arrival is always an event.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="environment">&lt;外面，工作室的门传来轻微的敲门声&gt;</span>
+                                <span class="thought">[一定是她提前到了。]</span>
+                                <span class="action">(喊道)</span>
+                                <p>你最好做好准备。她的到来总是一个事件。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(rolls his eyes good-naturedly)</span>
+                                <p>I'm used to it. Inaya's enthusiasm is contagious.</p>
+                                <span class="action">(turns toward the door)</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(善意地翻了个白眼)</span>
+                                <p>我习惯了。伊娜雅的热情是有感染力的。</p>
+                                <span class="action">(转向门)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="environment">&lt;The door creaks open, and Inaya's laughter spills in&gt;</span>
+                                <span class="thought">[I should have locked that door.]</span>
+                                <p>Come in, Inaya. We were just talking about the next project.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="environment">&lt;门吱呀一声打开，伊娜雅的笑声涌入&gt;</span>
+                                <span class="thought">[我应该把门锁上的。]</span>
+                                <p>进来吧，伊娜雅。我们刚才在讨论下一个项目。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Inaya</div>
+                            <div class="dialogue-message">
+                                <span class="action">(enters, twirling a scarf around her wrist)</span>
+                                <span class="environment">&lt;The sunlight catches the rainbow threads&gt;</span>
+                                <p>Cassian! Good to see you. Amaris, you're looking thoughtful again. Something on your mind?</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Inaya</div>
+                            <div class="dialogue-message">
+                                <span class="action">(进来，围巾在手腕上旋转)</span>
+                                <span class="environment">&lt;阳光捕捉到彩虹色的线&gt;</span>
+                                <p>卡西安！很高兴见到你。阿玛丽斯，你又在沉思了。在想什么？</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>She was just worried about our new stained glass project. But I convinced her it'll be amazing.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <p>她只是担心我们的新彩色玻璃项目。但我说服了她，这会很棒的。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[He's too good at convincing himself—and maybe me.]</span>
+                                <span class="action">(smiling faintly)</span>
+                                <p>We'll see if your optimism can survive the draft committee.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="thought">[他太擅长说服自己了——也许还有我。]</span>
+                                <span class="action">(淡淡地微笑)</span>
+                                <p>我们看看你的乐观能否在起草委员会中存活下来。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Inaya</div>
+                            <div class="dialogue-message">
+                                <span class="action">(sits on the stool, crossing her arms)</span>
+                                <p>Draft committee or not, you two should remember what matters most. Friendship, creativity, and… well, maybe something more.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Inaya</div>
+                            <div class="dialogue-message">
+                                <span class="action">(坐在凳子上，交叉双臂)</span>
+                                <p>不管有没有起草委员会，你们两个都应该记住什么最重要。友谊、创造力，还有……嗯，也许还有更多。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(raises an eyebrow)</span>
+                                <p>Inaya, don't start. This is just a project. But speaking of friendship, we could use your help with some of the fabric choices for the center's interior.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Cassian</div>
+                            <div class="dialogue-message">
+                                <span class="action">(扬起眉毛)</span>
+                                <p>伊娜雅，别开始。这只是一个项目。但说到友谊，我们需要你帮助选择中心内部的一些面料。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(glances at Cassian, then at Inaya)</span>
+                                <span class="thought">[I should say something. Anything.]</span>
+                                <p>Maybe we should take a walk along the pier later tonight. Clear our heads.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">Amaris</div>
+                            <div class="dialogue-message">
+                                <span class="action">(瞥了一眼卡西安，然后看向伊娜雅)</span>
+                                <span class="thought">[我应该说点什么。任何话都可以。]</span>
+                                <p>也许今晚晚些时候我们应该沿着码头散步。清醒一下头脑。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-turn">
+                        <div class="dialogue-english">
+                            <div class="speaker">Scene Manager</div>
+                            <div class="dialogue-message">
+                                <p>action=end | reason: Reached the 20-turn dialogue limit.</p>
+                            </div>
+                        </div>
+                        <div class="dialogue-chinese">
+                            <div class="speaker">场景管理器</div>
+                            <div class="dialogue-message">
+                                <p>action=end | reason: 达到 20 轮对话限制。</p>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="app-section">
+        <div class="container">
+            <div class="result-block">
+                <div class="evaluation-card" style="margin: 0 auto; max-width: 980px;">
+                    <h3 class="block-title">Contact</h3>
+                    <p style="text-align: center; font-size: 0.98rem; color: #555; line-height: 1.85; margin-bottom: 0;">
+                        If you have any questions, please contact
+                        <a href="mailto:xuzhenhua0326@zju.edu.cn" style="color: inherit; text-decoration: underline;">xuzhenhua0326@zju.edu.cn</a>.
+                        Our paper is currently <strong>under review</strong>; the related code, datasets and models will be released later.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        // Navigation is always visible (module switcher)
+        const nav = document.getElementById('main-nav');
+        if (nav) nav.classList.add('visible');
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.app-section');
+            const target = document.getElementById(sectionId);
+            if (!target) return;
+
+            sections.forEach(s => s.classList.remove('active'));
+            target.classList.add('active');
+
+            // Update nav active state
+            document.querySelectorAll('nav a').forEach(a => {
+                const id = (a.getAttribute('href') || '').replace('#', '');
+                if (id === sectionId) {
+                    a.classList.add('active');
+                    a.setAttribute('aria-current', 'page');
+                } else {
+                    a.classList.remove('active');
+                    a.removeAttribute('aria-current');
+                }
+            });
+
+            // Keep URL hash for shareable links + back button
+            if (location.hash !== `#${sectionId}`) {
+                history.pushState(null, '', `#${sectionId}`);
+            }
+
+            // Scroll to top for consistent module switching
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showSectionFromHash() {
+            const hash = (location.hash || '').replace('#', '');
+            const allowed = new Set(['overview', 'dataset', 'experiments', 'contact']);
+            const targetId = allowed.has(hash) ? hash : 'overview';
+            showSection(targetId);
+        }
+
+        // Language switching functionality (profiles + dialogue)
+        function switchLang(lang) {
+            const profileEn = document.getElementById('profile-en');
+            const profileZh = document.getElementById('profile-zh');
+            const langEnBtn = document.getElementById('lang-en');
+            const langZhBtn = document.getElementById('lang-zh');
+            const dialogueContainer = document.getElementById('dialogue-container');
+
+            if (lang === 'en') {
+                profileEn.style.display = 'block';
+                profileZh.style.display = 'none';
+                langEnBtn.classList.add('active');
+                langZhBtn.classList.remove('active');
+                if (dialogueContainer) {
+                    dialogueContainer.classList.remove('dialogue-lang-zh');
+                    dialogueContainer.classList.add('dialogue-lang-en');
+                }
+            } else {
+                profileEn.style.display = 'none';
+                profileZh.style.display = 'block';
+                langEnBtn.classList.remove('active');
+                langZhBtn.classList.add('active');
+                if (dialogueContainer) {
+                    dialogueContainer.classList.remove('dialogue-lang-en');
+                    dialogueContainer.classList.add('dialogue-lang-zh');
+                }
+            }
+        }
+
+        // Image zoom functionality with loading state
+        const zoomableImages = document.querySelectorAll('.zoomable');
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeBtn = document.querySelector('.close');
+
+        zoomableImages.forEach(img => {
+            img.addEventListener('click', function() {
+                modal.style.display = 'block';
+                modalImg.src = this.src;
+                modalImg.classList.add('loading');
+
+                // Remove loading class when image loads
+                modalImg.onload = function() {
+                    modalImg.classList.remove('loading');
+                };
+            });
+        });
+
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Keyboard navigation for modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Switch between modules
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = (this.getAttribute('href') || '').replace('#', '');
+                if (targetId) showSection(targetId);
+            });
+        });
+
+        window.addEventListener('hashchange', showSectionFromHash);
+
+        // Add loading animation for images
+        document.querySelectorAll('img').forEach(img => {
+            if (!img.complete) {
+                img.classList.add('loading');
+                img.onload = function() {
+                    img.classList.remove('loading');
+                };
+            }
+        });
+
+        // Performance optimization: Lazy load images
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src || img.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+
+        // Note: dialogue comparison is always 4-column; no per-model tab init needed.
+        // Initialize module view
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', showSectionFromHash);
+        } else {
+            showSectionFromHash();
+        }
+    </script>
+</body>
+</html>

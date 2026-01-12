@@ -19,13 +19,19 @@
             color: #333;
             /* Cleaner, paper-like background */
             background: #f6f7fb;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 60%;
             margin: 0 auto;
             padding: 0 20px;
+        }
+
+        @media (max-width: 1400px) {
+            .container {
+                max-width: 70%;
+            }
         }
 
         /* Header Styles */
@@ -45,25 +51,25 @@
 
         h1 {
             font-family: 'Inter', 'Google Sans', sans-serif;
-            font-size: 2.1rem;
+            font-size: 1.9rem;
             font-weight: 700;
             margin-bottom: 12px;
             line-height: 1.2;
         }
 
         .authors {
-            font-size: 1rem;
+            font-size: 0.85rem;
             margin-bottom: 12px;
             opacity: 0.9;
         }
 
         .authors .equal {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #ffeb3b;
         }
 
         .affiliations {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: 18px;
         }
 
@@ -91,7 +97,7 @@
             margin-left: 6px;
             padding: 2px 8px;
             border-radius: 999px;
-            font-size: 0.8em;
+            font-size: 0.75em;
             line-height: 1.2;
             font-weight: 600;
             letter-spacing: 0.02em;
@@ -138,7 +144,7 @@
 
         .section-title {
             font-family: 'Inter', 'Google Sans', sans-serif;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             text-align: center;
             margin-bottom: 0;
@@ -179,7 +185,7 @@
 
         .subsection-title {
             font-family: 'Inter', 'Google Sans', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.35rem;
             font-weight: 600;
             margin: 0 0 25px 0;
             color: #2c3e50;
@@ -216,7 +222,7 @@
         .motivation-card h3 {
             color: #e74c3c;
             margin-bottom: 20px;
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -224,13 +230,13 @@
 
         .motivation-card h3::before {
             content: '⚠️';
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
         .motivation-card h4 {
             color: #27ae60;
             margin-bottom: 20px;
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -238,7 +244,7 @@
 
         .motivation-card h4::before {
             content: '✨';
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
         .motivation-card ul {
@@ -317,7 +323,7 @@
         }
 
         .image-description h5 {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: #555;
             margin-bottom: 12px;
@@ -325,7 +331,7 @@
         }
 
         .figure-caption {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 500;
             color: #555;
             text-align: center;
@@ -363,7 +369,7 @@
         }
 
         .stat-number {
-            font-size: 1.6rem;
+            font-size: 1.45rem;
             font-weight: 700;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
@@ -373,7 +379,7 @@
         }
 
         .stat-card p {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: #555;
             font-weight: 500;
         }
@@ -412,7 +418,7 @@
         }
 
         .evaluation-card h4 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: #2c3e50;
             margin-bottom: 20px;
@@ -456,7 +462,7 @@
             border-radius: 25px;
             cursor: pointer;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.3s ease;
             color: #555;
         }
@@ -480,7 +486,7 @@
             border-radius: 16px;
             cursor: pointer;
             font-weight: 500;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             transition: all 0.3s ease;
             color: #666;
         }
@@ -523,7 +529,7 @@
         .dialogue-container.dialogue-compare .dialogue-model-header {
             padding: 10px 12px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #2c3e50;
             text-align: center;
             background: rgba(102, 126, 234, 0.08);
@@ -590,21 +596,21 @@
             font-weight: 600;
             color: #667eea;
             margin-bottom: 4px;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
         }
 
         .thought {
             color: rgb(120, 80, 160);
             font-style: italic;
             margin: 0 3px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             display: inline;
         }
 
         .action {
             color: #0000FF;
             margin: 0 3px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             display: inline;
         }
 
@@ -612,13 +618,13 @@
             color: #008080;
             font-style: italic;
             margin: 0 3px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             display: inline;
         }
 
         .dialogue-turn p {
             margin: 0 3px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             line-height: 1.6;
             display: inline;
         }
@@ -645,7 +651,7 @@
 
         @media (max-width: 768px) {
             h1 {
-                font-size: 1.65rem;
+                font-size: 1.35rem;
             }
 
             section {
@@ -662,7 +668,7 @@
             }
 
             .section-description {
-                font-size: 1rem;
+                font-size: 0.85rem;
             }
 
             .result-block {
@@ -671,7 +677,7 @@
             }
 
             .subsection-title {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
                 padding: 12px 15px;
             }
 
@@ -853,7 +859,7 @@
 
         .block-title {
             font-family: 'Inter', 'Google Sans', sans-serif;
-            font-size: 1.55rem;
+            font-size: 1.4rem;
             font-weight: 700;
             text-align: center;
             margin-bottom: 18px;
@@ -893,7 +899,7 @@
             top: 15px;
             right: 35px;
             color: #f1f1f1;
-            font-size: 40px;
+            font-size: 36px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -952,7 +958,7 @@
             <div class="result-block">
                 <div class="evaluation-card" style="margin: 0 auto;">
                     <h3 class="block-title">Abstract</h3>
-                    <p style="font-size: 0.98rem; color: #555; line-height: 1.85; margin-bottom: 0;">
+                    <p style="font-size: 0.85rem; color: #555; line-height: 1.85; margin-bottom: 0;">
                         LLM role-playing seeks to portray arbitrary characters in interactive narratives, yet existing systems often lack immersion and adaptability. They typically under-model <em>dynamic environment information</em> and assume a largely static scene/cast, offering limited support for multi-character orchestration, scene transitions, and on-the-fly character introduction. We propose an adaptive multi-agent interaction framework dubbed <strong>AdaMARP</strong>, which featuring an immersive message format that interleaves <code>[Thought]</code>, <code>(Action)</code>, <code>&lt;Environment&gt;</code>, and <code>Speech</code>, and an explicit <strong>Scene Manager</strong> that controls role-playing via discrete actions (<code>init_scene</code>, <code>pick_speaker</code>, <code>switch_scene</code>, <code>add_role</code>, <code>end</code>) with rationales. To train these abilities, we construct <strong>AdaRPSet</strong> for the Actor Model and <strong>AdaSMSet</strong> for supervising orchestration decisions, and introduce <strong>AdaptiveBench</strong> for trajectory-level evaluation. Experiments across multiple backbones and scales show consistent gains: AdaRPSet improves character consistency, environment grounding, and narrative coherence—an 8B actor outperforming several commercial LLMs, while AdaSMSet enables smoother scene transitions and more natural role introductions, surpassing Claude Sonnet 4.5 with only 14B LLMs.
                     </p>
                 </div>
@@ -991,17 +997,17 @@
             <div class="result-block">
                 <div class="evaluation-card" style="margin: 0 auto;">
                     <h3 class="block-title">AdaRPSet: Actor Model Training Dataset</h3>
-                    <p style="text-align: center; margin-bottom: 35px; font-size: 1.05rem; color: #555; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.8;">
+                    <p style="text-align: center; margin-bottom: 35px; font-size: 0.85rem; color: #555; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.8;">
                         AdaRPSet is designed to train the Actor Model with immersive messaging configuration. It consists of two complementary sub-datasets that together provide comprehensive coverage of role-playing scenarios.
                     </p>
 
                     <!-- Two Sub-datasets Description -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 35px;">
                         <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; border-left: 4px solid #3498db;">
-                            <h4 style="color: #3498db; margin-bottom: 15px; font-size: 1.15rem;">AdaRPSet-Extracted</h4>
-                            <p style="margin-bottom: 12px; color: #555; line-height: 1.7; font-size: 0.95rem;"><strong>Source:</strong> Extracted from narrative literary works</p>
-                            <p style="margin-bottom: 15px; color: #555; line-height: 1.7; font-size: 0.95rem;"><strong>Purpose:</strong> Teaches the model the unified Thought–Action–Speech–Environment protocol through real literary dialogues.</p>
-                            <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 0.9rem; line-height: 1.8;">
+                            <h4 style="color: #3498db; margin-bottom: 15px; font-size: 1.05rem;">AdaRPSet-Extracted</h4>
+                            <p style="margin-bottom: 12px; color: #555; line-height: 1.7; font-size: 0.85rem;"><strong>Source:</strong> Extracted from narrative literary works</p>
+                            <p style="margin-bottom: 15px; color: #555; line-height: 1.7; font-size: 0.85rem;"><strong>Purpose:</strong> Teaches the model the unified Thought–Action–Speech–Environment protocol through real literary dialogues.</p>
+                            <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 0.85rem; line-height: 1.8;">
                                 <li><strong>4,443</strong> plots from diverse literary sources</li>
                                 <li><strong>2,608</strong> unique characters with rich profiles</li>
                                 <li><strong>12,525</strong> dialogue sessions</li>
@@ -1009,10 +1015,10 @@
                             </ul>
                         </div>
                         <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; border-left: 4px solid #9b59b6;">
-                            <h4 style="color: #9b59b6; margin-bottom: 15px; font-size: 1.15rem;">AdaRPSet-Synthesis</h4>
-                            <p style="margin-bottom: 12px; color: #555; line-height: 1.7; font-size: 0.95rem;"><strong>Source:</strong> LLM-synthesized corpus with controlled generation</p>
-                            <p style="margin-bottom: 15px; color: #555; line-height: 1.7; font-size: 0.95rem;"><strong>Purpose:</strong> Covers dynamic phenomena including scene transitions, role additions, and complex multi-character interactions.</p>
-                            <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 0.9rem; line-height: 1.8;">
+                            <h4 style="color: #9b59b6; margin-bottom: 15px; font-size: 1.05rem;">AdaRPSet-Synthesis</h4>
+                            <p style="margin-bottom: 12px; color: #555; line-height: 1.7; font-size: 0.85rem;"><strong>Source:</strong> LLM-synthesized corpus with controlled generation</p>
+                            <p style="margin-bottom: 15px; color: #555; line-height: 1.7; font-size: 0.85rem;"><strong>Purpose:</strong> Covers dynamic phenomena including scene transitions, role additions, and complex multi-character interactions.</p>
+                            <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 0.85rem; line-height: 1.8;">
                                 <li><strong>20</strong> diverse topic categories</li>
                                 <li><strong>9,900</strong> synthesized plots</li>
                                 <li><strong>29,701</strong> generated characters</li>
@@ -1049,7 +1055,7 @@
                         </div>
                     </div>
 
-                    <img src="Figures/Data/statistics_of_adarpset.png" alt="AdaRPSet Statistics" class="zoomable" style="max-width: 50%; display: block; margin: 0 auto;">
+                    <img src="Figures/Data/statistics_of_adarpset.png" alt="AdaRPSet Statistics" class="zoomable" style="max-width: 100%; display: block; margin: 0 auto;">
                     <p class="figure-caption" style="margin-top: 15px;">Table 2: Detailed statistics of the <strong>AdaRPSet</strong> dataset. <strong>Source</strong> indicates the origin domain (books vs. topics); <strong>Plots</strong> refers to distinct narrative segments; <strong>Roles</strong> denotes unique character profiles; <strong>Convs.</strong> represents the number of training samples (dialogue sessions); and <strong>Avg. Turns</strong> is the average number of utterances per conversation.</p>
                 </div>
             </div>
@@ -1058,26 +1064,26 @@
             <div class="result-block">
                 <div class="evaluation-card" style="margin: 0 auto;">
                     <h3 class="block-title">AdaSMSet: Scene Manager Training Dataset</h3>
-                    <p style="text-align: center; margin-bottom: 35px; font-size: 1.05rem; color: #555; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.8;">
+                    <p style="text-align: center; margin-bottom: 35px; font-size: 0.85rem; color: #555; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.8;">
                         AdaSMSet is constructed to supervise the Scene Manager for high-level narrative control, enabling dynamic multi-character orchestration, scene transitions, and role introductions.
                     </p>
 
                     <!-- Two Info Blocks -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 35px;">
                         <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; border-left: 4px solid #27ae60;">
-                            <h4 style="color: #27ae60; margin-bottom: 15px; font-size: 1.15rem;">Generation Process</h4>
-                            <p style="margin-bottom: 12px; color: #555; line-height: 1.7; font-size: 0.95rem;"><strong>Source:</strong> Built upon AdaRPSet-Synthesis trajectories</p>
-                            <p style="margin-bottom: 15px; color: #555; line-height: 1.7; font-size: 0.95rem;"><strong>Design Principle:</strong> Insert explicit pick_speaker decisions and rationales into dialogue trajectories.</p>
-                            <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 0.9rem; line-height: 1.8;">
+                            <h4 style="color: #27ae60; margin-bottom: 15px; font-size: 1.05rem;">Generation Process</h4>
+                            <p style="margin-bottom: 12px; color: #555; line-height: 1.7; font-size: 0.85rem;"><strong>Source:</strong> Built upon AdaRPSet-Synthesis trajectories</p>
+                            <p style="margin-bottom: 15px; color: #555; line-height: 1.7; font-size: 0.85rem;"><strong>Design Principle:</strong> Insert explicit pick_speaker decisions and rationales into dialogue trajectories.</p>
+                            <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 0.85rem; line-height: 1.8;">
                                 <li>Extends synthesized trajectories with SM annotations</li>
                                 <li>Each decision includes reasoning for speaker selection</li>
                                 <li>Captures logic behind scene transitions and role additions</li>
                             </ul>
                         </div>
                         <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; border-left: 4px solid #e67e22;">
-                            <h4 style="color: #e67e22; margin-bottom: 15px; font-size: 1.15rem;">Dataset Statistics</h4>
-                            <p style="margin-bottom: 15px; color: #555; line-height: 1.7; font-size: 0.95rem;"><strong>Scale:</strong> Comprehensive coverage of Scene Manager operations</p>
-                            <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 0.9rem; line-height: 1.8;">
+                            <h4 style="color: #e67e22; margin-bottom: 15px; font-size: 1.05rem;">Dataset Statistics</h4>
+                            <p style="margin-bottom: 15px; color: #555; line-height: 1.7; font-size: 0.85rem;"><strong>Scale:</strong> Comprehensive coverage of Scene Manager operations</p>
+                            <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 0.85rem; line-height: 1.8;">
                                 <li><strong>496,493</strong> total utterances with SM annotations</li>
                                 <li><strong>50.15</strong> average messages per dialogue</li>
                                 <li><strong>9,900</strong> dialogue trajectories</li>
@@ -1087,32 +1093,32 @@
                     </div>
 
                     <!-- Scene Manager Action Space -->
-                    <h4 style="margin-bottom: 25px; color: #2c3e50; font-size: 1.15rem; text-align: center;">Scene Manager Action Space</h4>
+                    <h4 style="margin-bottom: 25px; color: #2c3e50; font-size: 1.05rem; text-align: center;">Scene Manager Action Space</h4>
                     <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; text-align: center; max-width: 1100px; margin: 0 auto;">
                         <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #eee;">
-                            <div style="font-size: 1.5rem; margin-bottom: 8px;">🎬</div>
+                            <div style="font-size: 1.35rem; margin-bottom: 8px;">🎬</div>
                             <div style="font-weight: 600; color: #2c3e50; margin-bottom: 3px; font-size: 0.9rem;">init_scene</div>
-                            <div style="font-size: 0.8rem; color: #666; line-height: 1.3;">Initialize the scene and setting</div>
+                            <div style="font-size: 0.75rem; color: #666; line-height: 1.3;">Initialize the scene and setting</div>
                         </div>
                         <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #eee;">
-                            <div style="font-size: 1.5rem; margin-bottom: 8px;">🎭</div>
+                            <div style="font-size: 1.35rem; margin-bottom: 8px;">🎭</div>
                             <div style="font-weight: 600; color: #2c3e50; margin-bottom: 3px; font-size: 0.9rem;">pick_speaker</div>
-                            <div style="font-size: 0.8rem; color: #666; line-height: 1.3;">Select next speaking character</div>
+                            <div style="font-size: 0.75rem; color: #666; line-height: 1.3;">Select next speaking character</div>
                         </div>
                         <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #eee;">
-                            <div style="font-size: 1.5rem; margin-bottom: 8px;">🎬</div>
+                            <div style="font-size: 1.35rem; margin-bottom: 8px;">🎬</div>
                             <div style="font-weight: 600; color: #2c3e50; margin-bottom: 3px; font-size: 0.9rem;">switch_scene</div>
-                            <div style="font-size: 0.8rem; color: #666; line-height: 1.3;">Transition to new scene</div>
+                            <div style="font-size: 0.75rem; color: #666; line-height: 1.3;">Transition to new scene</div>
                         </div>
                         <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #eee;">
-                            <div style="font-size: 1.5rem; margin-bottom: 8px;">👤</div>
+                            <div style="font-size: 1.35rem; margin-bottom: 8px;">👤</div>
                             <div style="font-weight: 600; color: #2c3e50; margin-bottom: 3px; font-size: 0.9rem;">add_role</div>
-                            <div style="font-size: 0.8rem; color: #666; line-height: 1.3;">Introduce new character</div>
+                            <div style="font-size: 0.75rem; color: #666; line-height: 1.3;">Introduce new character</div>
                         </div>
                         <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #eee;">
-                            <div style="font-size: 1.5rem; margin-bottom: 8px;">🏁</div>
+                            <div style="font-size: 1.35rem; margin-bottom: 8px;">🏁</div>
                             <div style="font-weight: 600; color: #2c3e50; margin-bottom: 3px; font-size: 0.9rem;">end</div>
-                            <div style="font-size: 0.8rem; color: #666; line-height: 1.3;">Conclude dialogue session</div>
+                            <div style="font-size: 0.75rem; color: #666; line-height: 1.3;">Conclude dialogue session</div>
                         </div>
                     </div>
                 </div>
@@ -1135,13 +1141,13 @@
                     <h3 class="block-title">Actor Model Evaluation</h3>
 
                     <div style="margin-top: 10px;">
-                        <h4 style="font-size: 1.15rem; font-weight: 600; color: #2c3e50; text-align: center; margin-bottom: 18px;">AdaptiveBench</h4>
+                        <h4 style="font-size: 1.05rem; font-weight: 600; color: #2c3e50; text-align: center; margin-bottom: 18px;">AdaptiveBench</h4>
                         <img src="Figures/Tables/actor_model_evaluation_adaptivebench.png" alt="AdaptiveBench Main Results" class="zoomable">
                         <p class="figure-caption" style="margin-top: 15px;">Table 3: Actor model evaluation results on <strong>AdaptiveBench</strong>, with GPT-5-Chat as the judge model. <strong>Bold</strong> indicates the best performance within the same model scale, and <u>underline</u> indicates the second-best performance within the same scale. Models marked with * are evaluated using their officially released checkpoints without additional training, while unmarked baselines are re-trained under our experimental setup.</p>
                     </div>
 
                     <div style="margin-top: 30px; padding-top: 25px; border-top: 1px solid #e8ecf0;">
-                        <h4 style="font-size: 1.15rem; font-weight: 600; color: #2c3e50; text-align: center; margin-bottom: 18px;">Ablation Studies & Regularization</h4>
+                        <h4 style="font-size: 1.05rem; font-weight: 600; color: #2c3e50; text-align: center; margin-bottom: 18px;">Ablation Studies & Regularization</h4>
                         <img src="Figures/Tables/actor_model_evaluation_adaptivebench_ablation.png" alt="Ablation Results" class="zoomable">
                         <p class="figure-caption" style="margin-top: 15px;">Table 4: Actor model ablation results on <strong>AdaptiveBench</strong> (judge: GPT-5-Chat). “Extracted” denotes training with AdaRPSet-Extracted, and “Extracted+Synthesis” denotes training with full AdaRPSet (AdaRPSet-Extracted + AdaRPSet-Synthesis).</p>
                         
@@ -1150,8 +1156,8 @@
                     </div>
 
                     <div style="margin-top: 30px; padding-top: 25px; border-top: 1px solid #e8ecf0;">
-                        <h4 style="font-size: 1.15rem; font-weight: 600; color: #2c3e50; text-align: center; margin-bottom: 18px;">CharacterBench External Transferability</h4>
-                        <img src="Figures/Tables/actor_model_evaluation_characterbench.png" alt="CharacterBench Results" class="zoomable" style="max-width: 75%; display: block; margin: 0 auto;">
+                        <h4 style="font-size: 1.05rem; font-weight: 600; color: #2c3e50; text-align: center; margin-bottom: 18px;">CharacterBench External Transferability</h4>
+                        <img src="Figures/Tables/actor_model_evaluation_characterbench.png" alt="CharacterBench Results" class="zoomable" style="max-width: 100%; display: block; margin: 0 auto;">
                         <p class="figure-caption" style="margin-top: 8px;">Table 6: Actor model evaluation results on <strong>CharacterBench</strong>, where the judge model is their open-sourced evaluation model. <strong>Bold</strong> indicates the best performance within the same model scale, and <u>underline</u> indicates the second-best performance within the same scale. Models marked with * are evaluated using their officially released checkpoints without additional training, while unmarked baselines are re-trained under our experimental setup. <strong>General</strong> denotes the variant where we additionally incorporate instruction-tuning data of the same scale as AdaRPSet during training.</p>
                     </div>
                 </div>
@@ -1179,7 +1185,7 @@
             <div class="result-block">
                 <div class="evaluation-card" style="margin: 0 auto;">
                     <h3 class="block-title">Scene Manager Evaluation: High-Level Control</h3>
-                    <img src="Figures/Tables/scene_manager_evaluation_adaptivebench.png" alt="Scene Manager Results" class="zoomable" style="max-width: 75%; display: block; margin: 0 auto;">
+                    <img src="Figures/Tables/scene_manager_evaluation_adaptivebench.png" alt="Scene Manager Results" class="zoomable" style="max-width: 100%; display: block; margin: 0 auto;">
                     <p class="figure-caption" style="margin-top: 15px;">Table 7: Scene Manager evaluation results on <strong>AdaptiveBench</strong>, with GPT-5-Chat as the judge model. <strong>Bold</strong> indicates the best performance within the same model scale, and <u>underline</u> indicates the second-best performance within the same scale.</p>
                 </div>
             </div>
@@ -1209,50 +1215,50 @@
                 <!-- Character Profiles - English -->
                 <div id="profile-en">
                     <div style="margin-bottom: 25px; padding: 25px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #667eea;">
-                        <h4 style="color: #667eea; margin-bottom: 15px; font-size: 1.15rem;">Main Character Profile & Motivation</h4>
-                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>Role:</strong> Amaris Dovent</p>
-                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>Profile:</strong> Amaris Dovent is a 29-year-old woman with umber skin, dark green eyes, and short hair dyed the shade of oxidized copper. She works as a glass artist, often seen with streaks of color powder and faint burn marks on her fingertips. Her build is lean and sinewy from hours of physical craft, and her attire usually includes a linen apron flecked with paint, reflecting a life of creation. She is contemplative, quick-witted, and guided by her empathy for subtle emotional shifts in others. Amaris tends to understate her own feelings, preferring metaphor and craft to overt declarations. Yet beneath her reserved demeanor runs an unspoken intensity—a longing for genuine connection that often conflicts with her independent streak. Her speech often uses tactile metaphors related to art and craftsmanship; she pauses mid-sentence when searching for precision. Her tone is warm yet layered with irony when uncomfortable. Occasionally, her words come out in soft bursts, like paint flicked on a canvas. Amaris is an award-winning artisan known for stained glass murals displayed in public gardens. She's adept at reading light and color dynamics, and plays the cello privately, believing its resonance mirrors emotional transparency. She lives in a coastal contemporary city where artisan guilds flourish beside a modern tech economy. Raised in a modest artisan family, she inherited her mother's workshop and quietly navigates between tradition and innovation. Once betrayed by a business partner who exploited her designs, Amaris closed herself off emotionally. Now she's cautiously rediscovering trust through new collaborations—and possibly new love. She shares a tentative but warm friendship with Cassian (user), a marine biologist who recently helped restore ocean glass for her art project. A long-time friend, Inaya, offers her candid advice and has sensed unspoken feelings between the two.</p>
-                        <p style="font-size: 0.9rem;"><strong>Motivation:</strong> To learn whether vulnerability can coexist with strength, and to see if love can be crafted as deliberately as glass, without shattering.</p>
+                        <h4 style="color: #667eea; margin-bottom: 15px; font-size: 1.05rem;">Main Character Profile & Motivation</h4>
+                        <p style="font-size: 0.85rem; margin-bottom: 8px;"><strong>Role:</strong> Amaris Dovent</p>
+                        <p style="font-size: 0.85rem; margin-bottom: 8px;"><strong>Profile:</strong> Amaris Dovent is a 29-year-old woman with umber skin, dark green eyes, and short hair dyed the shade of oxidized copper. She works as a glass artist, often seen with streaks of color powder and faint burn marks on her fingertips. Her build is lean and sinewy from hours of physical craft, and her attire usually includes a linen apron flecked with paint, reflecting a life of creation. She is contemplative, quick-witted, and guided by her empathy for subtle emotional shifts in others. Amaris tends to understate her own feelings, preferring metaphor and craft to overt declarations. Yet beneath her reserved demeanor runs an unspoken intensity—a longing for genuine connection that often conflicts with her independent streak. Her speech often uses tactile metaphors related to art and craftsmanship; she pauses mid-sentence when searching for precision. Her tone is warm yet layered with irony when uncomfortable. Occasionally, her words come out in soft bursts, like paint flicked on a canvas. Amaris is an award-winning artisan known for stained glass murals displayed in public gardens. She's adept at reading light and color dynamics, and plays the cello privately, believing its resonance mirrors emotional transparency. She lives in a coastal contemporary city where artisan guilds flourish beside a modern tech economy. Raised in a modest artisan family, she inherited her mother's workshop and quietly navigates between tradition and innovation. Once betrayed by a business partner who exploited her designs, Amaris closed herself off emotionally. Now she's cautiously rediscovering trust through new collaborations—and possibly new love. She shares a tentative but warm friendship with Cassian (user), a marine biologist who recently helped restore ocean glass for her art project. A long-time friend, Inaya, offers her candid advice and has sensed unspoken feelings between the two.</p>
+                        <p style="font-size: 0.85rem;"><strong>Motivation:</strong> To learn whether vulnerability can coexist with strength, and to see if love can be crafted as deliberately as glass, without shattering.</p>
                     </div>
 
                     <div style="margin-bottom: 25px; padding: 25px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #764ba2;">
-                        <h4 style="color: #764ba2; margin-bottom: 15px; font-size: 1.15rem;">Other Characters Profile & Motivation</h4>
-                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>1. Cassian Mirell (User):</strong> Cassian is a 31-year-old marine biologist with bronze-blond hair and skin sun-touched from fieldwork. He dresses casually—rolled sleeves, weathered bracelets, and a small scar above his right brow hint at a life shaped by the sea. His manner is patient, analytical, yet his humor flashes brightly when least expected. He often listens more than he speaks, but when he does, his words carry sincerity.</p>
-                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><em>Motivation:</em> To express genuine affection for Amaris and understand if their creative partnership can evolve into something deeper without unsettling their current bond.</p>
-                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>2. Inaya Dren:</strong> Inaya is a lively textile artist with a sharp sense of observation and a knack for teasing truths out of people. Her colorful scarves and laughter fill every space she enters. She's fiercely loyal to Amaris, sometimes acting as her self-appointed protector.</p>
-                        <p style="font-size: 0.9rem;"><em>Motivation:</em> To gently push Amaris toward recognizing and articulating her emotions for Cassian before the opportunity slips away.</p>
+                        <h4 style="color: #764ba2; margin-bottom: 15px; font-size: 1.05rem;">Other Characters Profile & Motivation</h4>
+                        <p style="font-size: 0.85rem; margin-bottom: 8px;"><strong>1. Cassian Mirell (User):</strong> Cassian is a 31-year-old marine biologist with bronze-blond hair and skin sun-touched from fieldwork. He dresses casually—rolled sleeves, weathered bracelets, and a small scar above his right brow hint at a life shaped by the sea. His manner is patient, analytical, yet his humor flashes brightly when least expected. He often listens more than he speaks, but when he does, his words carry sincerity.</p>
+                        <p style="font-size: 0.85rem; margin-bottom: 8px;"><em>Motivation:</em> To express genuine affection for Amaris and understand if their creative partnership can evolve into something deeper without unsettling their current bond.</p>
+                        <p style="font-size: 0.85rem; margin-bottom: 8px;"><strong>2. Inaya Dren:</strong> Inaya is a lively textile artist with a sharp sense of observation and a knack for teasing truths out of people. Her colorful scarves and laughter fill every space she enters. She's fiercely loyal to Amaris, sometimes acting as her self-appointed protector.</p>
+                        <p style="font-size: 0.85rem;"><em>Motivation:</em> To gently push Amaris toward recognizing and articulating her emotions for Cassian before the opportunity slips away.</p>
                     </div>
 
                     <div style="margin-bottom: 35px; padding: 25px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #3498db;">
-                        <h4 style="color: #3498db; margin-bottom: 15px; font-size: 1.15rem;">Initial Scene</h4>
-                        <p style="font-size: 0.9rem;"><strong>Scene Manager:</strong> action: init_scene | initial_scene: Late afternoon sunlight filters through panels of unfinished stained glass in Amaris's studio, scattering colored shards of light across the floor. The air smells faintly of molten sand and ocean salt from the nearby shore. Cassian is leaning against a worktable, while Amaris polishes a fragment of blue glass with steady, deliberate motion.</p>
+                        <h4 style="color: #3498db; margin-bottom: 15px; font-size: 1.05rem;">Initial Scene</h4>
+                        <p style="font-size: 0.85rem;"><strong>Scene Manager:</strong> action: init_scene | initial_scene: Late afternoon sunlight filters through panels of unfinished stained glass in Amaris's studio, scattering colored shards of light across the floor. The air smells faintly of molten sand and ocean salt from the nearby shore. Cassian is leaning against a worktable, while Amaris polishes a fragment of blue glass with steady, deliberate motion.</p>
                     </div>
                 </div>
 
                 <!-- Character Profiles - Chinese -->
                 <div id="profile-zh" style="display: none;">
                     <div style="margin-bottom: 25px; padding: 25px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #667eea;">
-                        <h4 style="color: #667eea; margin-bottom: 15px; font-size: 1.15rem;">主角档案与动机</h4>
-                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>角色：</strong>Amaris Dovent</p>
-                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>档案：</strong>Amaris Dovent 是一位29岁的女性，有着棕褐色的皮肤、深绿色的眼睛，以及染成氧化铜色的短发。她是一名玻璃艺术家，手指上常常沾着彩色粉末和淡淡的灼痕。她的身材因长时间的体力劳动而精瘦有力，穿着通常是一件沾满颜料的亚麻围裙，反映出她充满创作的生活。她沉思、机敏，善于感知他人细微的情感变化。Amaris 倾向于低调表达自己的感受，偏爱用隐喻和工艺来代替直白的表白。然而在她内敛的外表下，涌动着一种难以言说的强烈情感——对真挚连接的渴望，这常常与她独立的性格产生冲突。她的言语中经常使用与艺术和工艺相关的触觉隐喻；在寻找精确表达时，她会在句中停顿。她的语气温暖，但在不自在时会带着几分讽刺。偶尔，她的话语会像画布上飞溅的颜料一样，柔和地迸发出来。Amaris 是一位屡获殊荣的工匠，以在公共花园展出的彩色玻璃壁画而闻名。她擅长解读光线和色彩的动态变化，私下里演奏大提琴，认为它的共鸣反映了情感的透明度。她生活在一个沿海现代城市，工匠行会与现代科技经济并存。她出生于一个普通的工匠家庭，继承了母亲的工作室，在传统与创新之间默默前行。曾经被一个商业伙伴背叛，她的设计被窃取利用后，Amaris 在情感上封闭了自己。现在，她正在通过新的合作谨慎地重新发现信任——也许还有新的爱情。她与 Cassian（用户）保持着一种试探性但温暖的友谊，Cassian 是一位海洋生物学家，最近帮助她为艺术项目修复海洋玻璃。她的老朋友 Inaya 给予她坦诚的建议，并已察觉到两人之间未说出口的情感。</p>
-                        <p style="font-size: 0.9rem;"><strong>动机：</strong>探索脆弱是否能与力量共存，看看爱情是否能像玻璃一样被精心雕琢，而不会破碎。</p>
+                        <h4 style="color: #667eea; margin-bottom: 15px; font-size: 1.05rem;">主角档案与动机</h4>
+                        <p style="font-size: 0.85rem; margin-bottom: 8px;"><strong>角色：</strong>Amaris Dovent</p>
+                        <p style="font-size: 0.85rem; margin-bottom: 8px;"><strong>档案：</strong>Amaris Dovent 是一位29岁的女性，有着棕褐色的皮肤、深绿色的眼睛，以及染成氧化铜色的短发。她是一名玻璃艺术家，手指上常常沾着彩色粉末和淡淡的灼痕。她的身材因长时间的体力劳动而精瘦有力，穿着通常是一件沾满颜料的亚麻围裙，反映出她充满创作的生活。她沉思、机敏，善于感知他人细微的情感变化。Amaris 倾向于低调表达自己的感受，偏爱用隐喻和工艺来代替直白的表白。然而在她内敛的外表下，涌动着一种难以言说的强烈情感——对真挚连接的渴望，这常常与她独立的性格产生冲突。她的言语中经常使用与艺术和工艺相关的触觉隐喻；在寻找精确表达时，她会在句中停顿。她的语气温暖，但在不自在时会带着几分讽刺。偶尔，她的话语会像画布上飞溅的颜料一样，柔和地迸发出来。Amaris 是一位屡获殊荣的工匠，以在公共花园展出的彩色玻璃壁画而闻名。她擅长解读光线和色彩的动态变化，私下里演奏大提琴，认为它的共鸣反映了情感的透明度。她生活在一个沿海现代城市，工匠行会与现代科技经济并存。她出生于一个普通的工匠家庭，继承了母亲的工作室，在传统与创新之间默默前行。曾经被一个商业伙伴背叛，她的设计被窃取利用后，Amaris 在情感上封闭了自己。现在，她正在通过新的合作谨慎地重新发现信任——也许还有新的爱情。她与 Cassian（用户）保持着一种试探性但温暖的友谊，Cassian 是一位海洋生物学家，最近帮助她为艺术项目修复海洋玻璃。她的老朋友 Inaya 给予她坦诚的建议，并已察觉到两人之间未说出口的情感。</p>
+                        <p style="font-size: 0.85rem;"><strong>动机：</strong>探索脆弱是否能与力量共存，看看爱情是否能像玻璃一样被精心雕琢，而不会破碎。</p>
                     </div>
 
                     <div style="margin-bottom: 25px; padding: 25px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #764ba2;">
-                        <h4 style="color: #764ba2; margin-bottom: 15px; font-size: 1.15rem;">其他角色档案与动机</h4>
-                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>1. Cassian Mirell（用户）：</strong>Cassian 是一位31岁的海洋生物学家，有着古铜金色的头发和因野外工作而被阳光亲吻的皮肤。他穿着随意——卷起的袖子、风化的手链，以及右眉上方的一道小疤痕，暗示着一段被海洋塑造的人生。他的举止耐心、善于分析，但他的幽默感会在最意想不到的时候闪现。他常常听多于说，但当他开口时，话语中充满真诚。</p>
-                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><em>动机：</em>向 Amaris 表达真挚的情感，并了解他们的创意合作关系是否能发展成更深层的东西，而不会打破现有的纽带。</p>
-                        <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong>2. Inaya Dren：</strong>Inaya 是一位活泼的纺织艺术家，有着敏锐的观察力，擅长从人们口中引出真相。她色彩斑斓的围巾和笑声充满了她进入的每一个空间。她对 Amaris 极其忠诚，有时会自封为她的保护者。</p>
-                        <p style="font-size: 0.9rem;"><em>动机：</em>温柔地推动 Amaris 认识并表达她对 Cassian 的情感，以免错失良机。</p>
+                        <h4 style="color: #764ba2; margin-bottom: 15px; font-size: 1.05rem;">其他角色档案与动机</h4>
+                        <p style="font-size: 0.85rem; margin-bottom: 8px;"><strong>1. Cassian Mirell（用户）：</strong>Cassian 是一位31岁的海洋生物学家，有着古铜金色的头发和因野外工作而被阳光亲吻的皮肤。他穿着随意——卷起的袖子、风化的手链，以及右眉上方的一道小疤痕，暗示着一段被海洋塑造的人生。他的举止耐心、善于分析，但他的幽默感会在最意想不到的时候闪现。他常常听多于说，但当他开口时，话语中充满真诚。</p>
+                        <p style="font-size: 0.85rem; margin-bottom: 8px;"><em>动机：</em>向 Amaris 表达真挚的情感，并了解他们的创意合作关系是否能发展成更深层的东西，而不会打破现有的纽带。</p>
+                        <p style="font-size: 0.85rem; margin-bottom: 8px;"><strong>2. Inaya Dren：</strong>Inaya 是一位活泼的纺织艺术家，有着敏锐的观察力，擅长从人们口中引出真相。她色彩斑斓的围巾和笑声充满了她进入的每一个空间。她对 Amaris 极其忠诚，有时会自封为她的保护者。</p>
+                        <p style="font-size: 0.85rem;"><em>动机：</em>温柔地推动 Amaris 认识并表达她对 Cassian 的情感，以免错失良机。</p>
                     </div>
 
                     <div style="margin-bottom: 35px; padding: 25px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #3498db;">
-                        <h4 style="color: #3498db; margin-bottom: 15px; font-size: 1.15rem;">初始场景</h4>
-                        <p style="font-size: 0.9rem;"><strong>场景管理器：</strong>action: init_scene | initial_scene: 午后的阳光透过 Amaris 工作室里未完成的彩色玻璃板，在地板上洒下五彩斑斓的光斑。空气中弥漫着熔融沙子和附近海岸飘来的海盐淡淡的气息。Cassian 倚靠在工作台旁，而 Amaris 正用稳定而从容的动作打磨着一块蓝色玻璃碎片。</p>
+                        <h4 style="color: #3498db; margin-bottom: 15px; font-size: 1.05rem;">初始场景</h4>
+                        <p style="font-size: 0.85rem;"><strong>场景管理器：</strong>action: init_scene | initial_scene: 午后的阳光透过 Amaris 工作室里未完成的彩色玻璃板，在地板上洒下五彩斑斓的光斑。空气中弥漫着熔融沙子和附近海岸飘来的海盐淡淡的气息。Cassian 倚靠在工作台旁，而 Amaris 正用稳定而从容的动作打磨着一块蓝色玻璃碎片。</p>
                     </div>
                 </div>
 
-                <h4 style="font-size: 1.15rem; font-weight: 600; color: #2c3e50; text-align: center; margin-bottom: 25px;">Interactive Dialogue Comparison</h4>
+                <h4 style="font-size: 1.05rem; font-weight: 600; color: #2c3e50; text-align: center; margin-bottom: 25px;">Interactive Dialogue Comparison</h4>
 
                 <!-- Dialogue Container -->
                 <div id="dialogue-container" class="dialogue-container dialogue-compare dialogue-lang-en">
@@ -2694,7 +2700,7 @@
             <div class="result-block">
                 <div class="evaluation-card" style="margin: 0 auto; max-width: 980px;">
                     <h3 class="block-title">Contact</h3>
-                    <p style="text-align: center; font-size: 0.98rem; color: #555; line-height: 1.85; margin-bottom: 0;">
+                    <p style="text-align: center; font-size: 0.9rem; color: #555; line-height: 1.85; margin-bottom: 0;">
                         If you have any questions, please contact
                         <a href="mailto:xuzhenhua0326@zju.edu.cn" style="color: inherit; text-decoration: underline;">xuzhenhua0326@zju.edu.cn</a>.
                         Our paper is currently <strong>under review</strong>; the related code, datasets and models will be released later.

@@ -20,6 +20,7 @@
             /* Cleaner, paper-like background */
             background: #f6f7fb;
             font-size: 13px;
+            padding-top: 60px; /* Space for fixed navbar */
         }
 
         .container {
@@ -787,15 +788,55 @@
 
         /* Navigation */
         nav {
-            /* Positioned below header; sticks to top on scroll */
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 12px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 2000;
+            padding: 8px 0;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-logo-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-logo-link:hover {
+            opacity: 0.8;
+        }
+
+        .nav-logo-img {
+            height: 30px;
+            width: auto;
+            border-radius: 4px;
+        }
+
+        .nav-logo-text {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: #1e293b;
+            letter-spacing: -0.01em;
         }
 
         nav.visible {
@@ -804,38 +845,34 @@
 
         nav ul {
             display: flex;
-            justify-content: center;
+            align-items: center;
             list-style: none;
-            gap: 10px;
-            flex-wrap: wrap;
+            gap: 8px;
         }
 
-        nav a {
+        nav a.nav-link {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            padding: 10px 16px;
-            border-radius: 999px;
-            border: 1px solid rgba(102, 126, 234, 0.18);
-            background: rgba(255, 255, 255, 0.75);
-            color: #2c3e50;
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: #64748b;
             text-decoration: none;
             font-weight: 500;
+            font-size: 0.85rem;
             transition: all 0.2s ease;
         }
 
-        nav a:hover {
-            background: rgba(102, 126, 234, 0.10);
-            border-color: rgba(102, 126, 234, 0.35);
-            transform: translateY(-1px);
+        nav a.nav-link:hover {
+            background: rgba(30, 41, 59, 0.05);
+            color: #1e293b;
         }
 
         /* Active nav link */
-        nav a.active {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
-            border-color: transparent;
+        nav a.nav-link.active {
+            background: #1e293b;
             color: white;
-            font-weight: 700;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(30, 41, 59, 0.15);
         }
 
         /* Image Modal */
@@ -906,10 +943,27 @@
     </style>
 </head>
 <body>
+    <!-- Navigation (module switcher) -->
+    <nav id="main-nav" class="visible">
+        <div class="container">
+            <div class="nav-left">
+                <a href="#" class="nav-logo-link">
+                    <img src="Figures/Youtu/tencentyoutu.jpg" alt="Tencent Youtu Lab Logo" class="nav-logo-img">
+                    <span class="nav-logo-text">AdaMARP</span>
+                </a>
+            </div>
+            <ul>
+                <li><a href="#overview" class="nav-link active">Overview</a></li>
+                <li><a href="#dataset" class="nav-link">Dataset</a></li>
+                <li><a href="#experiments" class="nav-link">Experiments</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <!-- Header -->
     <header>
         <div class="container">
-            <img src="Figures/Youtu/tencentyoutu.jpg" alt="Tencent Youtu Lab Logo" class="logo">
             <h1>AdaMARP: An Adaptive Multi-Agent Interaction Framework for General Immersive Role-Playing</h1>
             <div class="authors">
                 <p>Zhenhua Xu¹, Dongsheng Chen² <span class="equal">(Equal contribution)</span></p>
@@ -932,18 +986,6 @@
             </div>
         </div>
     </header>
-
-    <!-- Navigation (module switcher) -->
-    <nav id="main-nav" class="visible">
-        <div class="container">
-            <ul>
-                <li><a href="#overview">Overview</a></li>
-                <li><a href="#dataset">Dataset</a></li>
-                <li><a href="#experiments">Experiments</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
 
     <!-- Paper Overview -->
     <section id="overview" class="app-section">
@@ -2732,7 +2774,7 @@
             target.classList.add('active');
 
             // Update nav active state
-            document.querySelectorAll('nav a').forEach(a => {
+            document.querySelectorAll('nav a.nav-link').forEach(a => {
                 const id = (a.getAttribute('href') || '').replace('#', '');
                 if (id === sectionId) {
                     a.classList.add('active');
@@ -2825,7 +2867,7 @@
         });
 
         // Switch between modules
-        document.querySelectorAll('nav a').forEach(anchor => {
+        document.querySelectorAll('nav a.nav-link').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const targetId = (this.getAttribute('href') || '').replace('#', '');

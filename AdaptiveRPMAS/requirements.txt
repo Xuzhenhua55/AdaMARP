@@ -1,0 +1,11 @@
+# API inference and evaluation
+langchain-openai>=1.6.7,<2
+langgraph>=1.2.14,<2
+python-dotenv>=1.2,<2
+colorama>=0.4.6,<1
+# Data construction and evaluation config generation
+openai>=3.26,<4
+jsonlines>=4,<5
+tqdm>=4,<5
+tiktoken>=0.14,<1
+requests>=2.32,<3

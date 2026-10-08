@@ -973,12 +973,13 @@
                 <p>¹Zhejiang University, ²Tencent Youtu Lab</p>
                 <p>*Corresponding author: Meng Han (<a href="mailto:mhan@zju.edu.cn" style="color: inherit; text-decoration: underline;">mhan@zju.edu.cn</a>)</p>
             </div>
+            <p style="text-align: center; font-weight: 600; margin: 18px 0;">Findings of ACL 2026 · Code and datasets released</p>
             <div class="external-links">
                 <a href="https://arxiv.org/abs/2601.11007" class="link-btn" target="_blank" rel="noopener noreferrer">
                     <i class="fas fa-file-alt"></i> ArXiv
                 </a>
-                <a href="#" class="link-btn">
-                    <i class="fab fa-huggingface"></i> HuggingFace <span class="wait-badge">Coming soon</span>
+                <a href="https://aclanthology.org/2026.findings-acl.1563/" class="link-btn" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-book-open"></i> ACL Anthology
                 </a>
                 <a href="https://github.com/Xuzhenhua55/AdaMARP" class="link-btn">
                     <i class="fab fa-github"></i> GitHub
@@ -1024,12 +1025,17 @@
                 <p class="section-description">
                     To train models that can follow our adaptive framework, we construct two datasets: <strong>AdaRPSet</strong> for training the Actor Model and <strong>AdaSMSet</strong> for supervising the Scene Manager with dynamic narrative control capabilities.
                 </p>
+
             </div>
 
-            <!-- Comparation of General Role-Playing Datasets -->
+                <p style="text-align: center; margin-bottom: 24px; line-height: 1.7;">
+                    <a href="https://github.com/Xuzhenhua55/AdaMARP/tree/main/AdaptiveRPMAS/dataset_analysis/final_data" target="_blank" rel="noopener noreferrer">Download datasets</a> · Files are stored with Git LFS. See the <a href="https://github.com/Xuzhenhua55/AdaMARP/blob/main/AdaptiveRPMAS/README.md">code guide</a> for download instructions.
+                </p>
+
+            <!-- Comparison of General Role-Playing Datasets -->
             <div class="result-block">
                 <div class="evaluation-card" style="margin: 0 auto;">
-                    <h3 class="block-title">Comparation of General Role-Playing Datasets</h3>
+                    <h3 class="block-title">Comparison of General Role-Playing Datasets</h3>
                     <img src="Figures/Tables/comparation_of_general_role_playing_dataasets.png" alt="Comparison of datasets" class="zoomable" style="margin-top: 20px;">
                     <p class="figure-caption" style="margin-top: 15px;">Table 1: Comparison of general role-playing datasets. Profile subfields are abbreviated as: I&amp;A (Identity &amp; Appearance), P&amp;P (Personality &amp; Psychology), SS (Speaking Style), AIA (Abilities, Interests &amp; Achievements), SHC (Social &amp; Historical Context), and PHA (Personal History Arc). #Char denotes the number of distinct characters in the dataset. Init. Scene indicates whether dialogues are provided with an explicit initial scene or setting. Interloc. indicates whether the user (or dialogue partner) is assigned a specific profile. Rel. denotes whether explicit relationships among characters are modeled or annotated in dialogues. #Dial. refers to the total number of dialogues. Env. is short for Environment, indicating whether environmental descriptions are included. Open indicates whether the dataset is open-sourced. ● and * denote partial/implicit support or values inferred from the reported pipeline; detailed clarifications on symbol interpretations and dataset releases are provided in the paper.</p>
                 </div>
@@ -2747,24 +2753,44 @@
                     <p style="text-align: center; font-size: 0.9rem; color: #555; line-height: 1.85; margin-bottom: 12px;">
                         If you have any questions, please contact
                         <a href="mailto:xuzhenhua0326@zju.edu.cn" style="color: inherit; text-decoration: underline;">xuzhenhua0326@zju.edu.cn</a>.
-                        Our paper is currently <strong>under review</strong>; the related code, datasets and models will be released later.
+                        Our paper has been accepted to <strong>Findings of ACL 2026</strong>. Code and datasets are now available on <a href="https://github.com/Xuzhenhua55/AdaMARP">GitHub</a>.
                     </p>
                     <p style="text-align: center; font-size: 0.9rem; color: #555; line-height: 1.85; margin-bottom: 12px;">
                         If you find the code, datasets and models in this repository useful, please cite:
                     </p>
-                    <pre style="margin: 0 auto; max-width: 920px; white-space: pre-wrap; word-break: break-word; background: #f8f9fa; border: 1px solid #e8ecf0; border-radius: 12px; padding: 16px; color: #111827; font-size: 0.82rem; line-height: 1.5; text-align: left;"><code>@misc{xu2026adamarpadaptivemultiagentinteraction,
-      title={AdaMARP: An Adaptive Multi-Agent Interaction Framework for General Immersive Role-Playing},
-      author={Zhenhua Xu and Dongsheng Chen and Shuo Wang and Jian Li and Chengjie Wang and Meng Han and Yabiao Wang},
-      year={2026},
-      eprint={2601.11007},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI},
-      url={https://arxiv.org/abs/2601.11007},
+                    <pre style="margin: 0 auto; max-width: 920px; white-space: pre-wrap; word-break: break-word; background: #f8f9fa; border: 1px solid #e8ecf0; border-radius: 12px; padding: 16px; color: #111827; font-size: 0.82rem; line-height: 1.5; text-align: left;"><code>@inproceedings{xu-etal-2026-adamarp,
+    title = &quot;{A}da{MARP}: An Adaptive Multi-Agent Interaction Framework for General Immersive Role-Playing&quot;,
+    author = &quot;Xu, Zhenhua  and
+      Chen, Dongsheng  and
+      Wang, Shuo  and
+      Li, Jian  and
+      Wang, Chengjie  and
+      Han, Meng  and
+      Wang, Yabiao&quot;,
+    editor = &quot;Liakata, Maria  and
+      Moreira, Viviane P.  and
+      Zhang, Jiajun  and
+      Jurgens, David&quot;,
+    booktitle = &quot;Findings of the {A}ssociation for {C}omputational {L}inguistics: {ACL} 2026&quot;,
+    month = jul,
+    year = &quot;2026&quot;,
+    address = &quot;San Diego, California, United States&quot;,
+    publisher = &quot;Association for Computational Linguistics&quot;,
+    url = &quot;https://aclanthology.org/2026.findings-acl.1563/&quot;,
+    doi = &quot;10.18653/v1/2026.findings-acl.1563&quot;,
+    pages = &quot;31230--31283&quot;,
+    ISBN = &quot;979-8-89176-395-1&quot;,
+    abstract = &quot;LLM role-playing seeks to portray arbitrary characters in interactive narratives, yet existing systems often lack immersion and adapt ability. They typically under-model dynamic environment information and assume a largely static scene/cast, offering limited support for multi-character orchestration, scene transitions, and on-the-fly character introduction. We propose an adaptive multi-agent interaction framework dubbed AdaMARP, which featuring an immersive message format that interleaves [Thought], (Action), Environment, and Speech, and an explicit Scene Manager that controls role-playing via discrete actions (init{\_}scene, pick{\_}speaker, switch{\_}scene, add{\_}role, end) with rationales. To train these abilities, we construct AdaRPSet for the Actor Model and AdaSMSet for supervising or chestration decisions, and introduce AdaptiveBench for trajectory-level evaluation. Experiments across multiple backbones and scales show consistent gains: AdaRPSet improves character consistency, environment grounding, and narrative coherence{---}an 8B actor outperforming several commercial LLMs, while AdaSMSet enables smoother scene transitions and more natural role introductions, surpassing Claude Sonnet 4.5 with only 14B LLMs.&quot;
 }</code></pre>
                 </div>
             </div>
         </div>
     </section>
+
+    <footer style="text-align: center; padding: 24px; color: #555; font-size: 0.9rem;">
+        Code licensed under <a href="https://github.com/Xuzhenhua55/AdaMARP/blob/main/LICENSE">Apache-2.0</a>.
+        Datasets and third-party materials are subject to their applicable terms.
+    </footer>
 
     <!-- Image Modal -->
     <div id="imageModal" class="modal">
